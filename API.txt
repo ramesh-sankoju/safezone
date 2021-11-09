@@ -1,0 +1,6670 @@
+-- Add a Master data 
+	Url: http://localhost:8989/masterdata/add,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"tenantId":{{tenantId}},
+		"category":"locations", // wage_levels
+		"name":"New location 2",
+		"stateId": 3926,// Mandatory for adding location
+		"petitionType": 1 // Mandatory for adding 'petition_sub_types'
+	}
+
+-- Update a Master data 
+	Url: http://localhost:8989/masterdata/update,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json"
+	},
+	Payload: {
+		"tenantId":{{tenantId}},
+		"category":"banks",
+		"name":"Wells Fargo",
+		"mDataId": 2
+	}
+	
+-- Get master data
+	Url: http://localhost:8989/masterdata/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"matcher": {
+			"searchString":"",
+			"roleId": [7],
+			"petitionType": 1 // Required only to get "petition_sub_types",
+			"petitionerId": "5de4f0957573e61e381688ea", // required to get beneficiaries related to petitioner
+			"getWorkFlowConfig": true // Required only for 'petition_types' to get Workflow config
+		},
+		"page": 1,
+		"perpage": 10,
+		"category": "users_list", // form_letter_status, filing_docs_types, eye_colors, hair_colors, races, marriage_end_reasons, asset_types, liabilities_debts, public_benefits, document_types
+		"tenantId":{{tenantId}},
+		"sorting": {
+			"path": "name", // Only for petition_sub_types and petition_types
+			"order": 1
+		}
+	}
+	
+-- Add a Master data 
+	Url: http://localhost:8989/masterdata/migrate,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"apiKey":{{apiKey}},
+		"tenantId":{{tenantId}},
+		"collections": ["md_petition_sub_types"],
+		"petitionType": 1 // Required only for migrate "md_petition_sub_types",
+  		"globalData": true // Send true for migrate global data like 'md_tenant_status', 'questionnaire_fields'
+	} 
+
+-- Local Upload
+	Url: http://localhost:8989/common/local-upload,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		files: <FormData>,
+		type: 'forms-and-letters' // type is 'upload-forms-and-letters' when upload forms and Letters and is 'upload-scanned-copy' when upload scanned copies
+	}
+
+-- View File
+	Url: http://localhost:8989/common/viewfile?path=/global/uploads/w3dummy-1628870563350.pdf,
+	Method: Get,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	}
+
+	
+-- Get API Key
+	Url: http://localhost:8989/auth/get-api-key,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {}
+	
+-- Create a tenant
+	Url: http://localhost:8989/tenant/register,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"name": "Test Portal",
+		"adminFirstName":"Satish",
+		"adminLastName":"Kumar",
+		"adminEmail": "satish-immibox@yopmail.com",
+		"phone": "9090887666",
+		"phoneCountryCode":  { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		}
+		
+	}
+
+-- Invite a tenant
+	Url: http://localhost:8989/tenant/invite,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"name": "Test Portal",
+		"adminFirstName":"Satish",
+		"adminLastName":"Kumar",
+		"adminEmail": "satish-immibox@yopmail.com",
+		"phone": "9090887666",
+		"phoneCountryCode":  { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		}
+		
+	}
+
+-- Update a tenant
+	Url: http://localhost:8989/tenant/update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+			"tenantId": "6138a42b1fdcf8d421b946d7",
+			"name": "Turvo India",
+			"adminFirstName":"Admin",
+			"adminLastName":"User",
+			"phone": "9090887666",
+			"phoneCountryCode":  { 
+				"countryCode":"IN",
+				"countryCallingCode":"+91"
+			},
+			"logo": "https://s3.ap-south-1.amazonaws.com/immibox/innvectra/public/a/9/8/a98fa1b022aa11ec9fef5b824579d2cd.png",
+			"favicon": "https://s3.ap-south-1.amazonaws.com/immibox/innvectra/public/a/9/8/a98fa1b022aa11ec9fef5b824579d2cd.png",
+			"idPrefix": "TUV",
+			"slug": "turvo",
+			"assetPath": "turvo",
+			"fromEmail": "contact-turvo@yopmail.com",
+			"contactEmail": "info-turvo@yopmail.com",
+			"address": {
+				"line1" : "2045 W Grand Ave Ste B",
+				"line2" : "Chicago",
+				"countryId" : 231,
+				"stateId" : 3934,
+				"locationId" : 44173,
+				"zipcode" : "60640"
+			},
+    	"profCompleted": "Yes" // Send 'Yes' on complete profile
+	}
+
+-- Details of a tenant
+	Url: http://localhost:8989/tenant/details,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"tenantId": "60fec1a4bf695f3648f6fdc7",
+	}
+
+-- Details of a tenant bt subdomain
+	Url: http://localhost:8989/tenant/details-by-subdomain,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"slug": "innvectra",
+	}
+
+-- Update Status of a tenant
+	Url: http://localhost:8989/tenant/update-status,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"tenantId": "60fec1a4bf695f3648f6fdc7",
+		"statusId": 3
+	}
+
+-- Delete a tenant
+	Url: http://localhost:8989/tenant/delete,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"tenantId": "60fec1a4bf695f3648f6fdc7",
+	}
+
+-- Tenant List
+	Url: http://localhost:8989/tenant/list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+			"title": "inn",
+			"countryIds": [231],
+			"stateIds": [3934],
+			"locationIds": [44173],
+			"createdDateRange": ["2021-08-13", "2021-08-13"]
+		},
+		"getMasterData": true, // Optional
+		"page": 1,
+		"perpage": 25,
+		"sorting": {
+			"path": "createdOn", // createdByName, stautsName, name, email, customId, updatedOn
+			"order": 1
+		}
+	}
+
+-- resend Tenant email verifycation link  
+    Url: http://localhost:8989/tenant/resend-activation-key,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		adminEmail:"ravis@yopmail.com"
+    }
+
+
+-- Get checklist
+	Url: http://localhost:8989/tenant/get-checklist,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: { }
+
+
+-- User Signup(Only for Client/Petitioner)
+	Url: http://localhost:8989/auth/signup,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"name": "Petition Company 1",
+		"adminFirstName": "Company",
+		"adminLastName": "Admin",
+		"email": "petitioner1-intake@yopmail.com",
+		"phoneCountryCode":  { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"phone": "554554544",
+		"tenantId": "61375185fe5a85ac0909013c"
+	}
+	  
+-- User Invite(Only for Client/Petitioner)
+	Url: http://localhost:8989/auth/invite-petitioner,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+ 		"name": "Petitioner 1",
+		"adminFirstName": "Company",
+		"adminLastName": "Admin",
+		"email": "petitioner1-inn-immibox@yopmail.com",
+		"phoneCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"phone": "554554544"
+	}
+	
+-- User Registration
+	Url: http://localhost:8989/users/register,
+	Method: POST,
+	Headers: {
+		"name": "superAdmin 1",
+		"email": "superAdmin@yopmail.com",
+		"roleId": 1,
+		"firstName": "super",
+		"middleName": "admin",
+		"lastName": 1,
+		"phone": "98989977877",
+		"phoneCountryCode":  { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"address": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 674,
+			"countryId": 231,
+			"zipcode": "42323"
+		},
+		"apiKey": {{apikey}},
+		"superAdmin": true,
+		"password": "Password1"
+	}
+
+-- User Manage status
+	Url: http://localhost:8989/users/manage-status,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+	},
+	Payload:{
+  		"userId":"602b6ec60b1a52337c27c1f3",
+  		"statusId": 2,
+  		"statusName": 'Inactive'
+	}
+
+-- Resend Activation Link
+	Url: http://localhost:8989/users/resend-verify-link,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+ 		"email": "Benificiary2-intake@yopmail.com",
+		"tenantId": "602b6ec60b1a52337c27c1f3" // Required for all roles except 1 and 2
+	}
+	
+-- User Login
+	Url: http://localhost:8989/auth/login,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+	  "email": "petitioner-intake@yopmail.com",
+	  "password": "Password1",
+	  "tenantId":{{tenantId}} // Not required for roles 1 and 2
+	}
+	
+-- Forgot Password
+	Url: http://localhost:8989/auth/forgot-password,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"email": "sadmin-immibox@yopmail.com"
+	}
+	
+-- Update Password
+	Url: http://localhost:8989/auth/update-password,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"tenantId": 5db91d800ecb410a84102efc // Required if user is not super admin and support
+		"pin": "sha1$5f13f99c$1$92691c51442765347a603eb4ac10a4864e9f5c45",
+		"newPassword": "Password1",
+		"confirmPassword": "Password1",
+		"action": "forgot-password", // set-password: In case of resend link
+		"userId": "5db91d800ecb410a84102efc"
+	}
+	
+-- Verify email
+	Url: http://localhost:8989/auth/verify-email,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"tenantId":"6138a42b1fdcf8d421b946d7",
+		"userId":"6138a42b1fdcf8d421b946de",
+		"pin":"sha1$61972d22$1$a3302f9220c9d367eb305c24c48d6628e1f81e25"
+	}
+
+-- Change Password
+	Url: http://localhost:8989/auth/change-password,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"newPassword":"Password1",
+		"currentPassword":"Password2",
+		"email": "petitioner-intake@yopmail.com"
+	}
+	
+-- Update company details
+	Url: http://localhost:8989/company/update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"companyId":"5de4f0957573e61e381688ef",
+		"name": "My Petition Company 11",
+		"adminFirstName": "Company",
+		"adminLastName": "Admin",
+		"phone":"9999988888",
+		"phoneCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"fax":"5555444433",
+		"faxCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"irstaxId":"12-7786878",
+		"naicsCode":"432215",
+		"address": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 674,
+			"countryId": 231,
+			"zipcode": "42323"
+		},
+		"authorizedSignatory": { 
+			"firstName": "Satish",
+			"middleName": "Kumar",
+			"lastName": "Yenugu",
+			"title": "Lawyer",
+			"email": "satish-intake@gmail.com",
+			"phone": "5535354423",
+			"phoneCountryCode":  { 
+				"countryCode":"IN",
+				"countryCallingCode":"+91"
+			}
+		},
+		"natureOfBusiness":"Petition Filing Company",
+		"businessEstdDate":"2000-12-09",
+		"totalFullTimeEmployees":30,
+		"are50orMoreEmployeesInUS":"no",
+		"areAbove50PercentH1BL1ALABStatus":"no",
+		"finalDeterminationFromDOL":"no",
+		"estimatedNetAnualIncome":"54353.55",
+		"estimatedGrossAnualIncome":"2342.55",
+		"logo": "https://innvectra.rmtportal.com/logo.png",
+		"completeRegistration": true // it should be true only if it is petitioner
+	}
+	
+-- Update Petitioner status
+	Url: http://localhost:8989/company/update-status,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+	  "companyId":"5de4f0957573e61e381688ef",
+	  "statusId": 3 // 2: Approve, 3: Hold, 4: Reject
+	  "statusName": "Hold"
+	}
+	
+	
+-- Company List
+	Url: http://localhost:8989/company/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"matcher":{
+			"searchString": "Petition",
+			"statusIds": [3],
+			"countryIds": [38],
+			"stateIds": [674],
+			"locationIds": [4234],
+			"createdDateRange": ["2019-12-02","2019-12-05"]
+		},
+		"sorting": {
+			"path": "createdOn", invitedByName
+			"order": 1
+		}
+		"page": 1,
+		"perpage": 25
+	}
+		
+-- Company Details
+	Url: http://localhost:8989/company/details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"companyId":"5de4f0957573e61e381688ef"
+	}
+
+	
+-- Update user
+	Url: http://localhost:8989/users/update,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"userId":"5dd4ecdcb17ba020bcc508ad",
+		"name": "Satish Kumar",
+		"phone":"9990909090",
+		"phoneCountryCode":  { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"firstName": "Satish",
+		"middleName": "Kumar",
+		"lastName": "Yenugu",
+		"fax":"5555444433",
+		"faxCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+		"address": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 453,
+			"countryId": 231,
+			"zipcode": "42323"
+		}
+	}
+	
+-- Get users list
+	Url: http://localhost:8989/users/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"matcher": {
+			"title": "",
+			"statusList": [],
+			"createdByIds": [],
+			"createdDateRange": [],
+			"roleIds": [12],
+			"statusIds": [],
+			"petitionTypeIds": [],
+			"petitionSubTypeIds": [],
+			"petitionCreatedDateRange": [],
+			"petitionStatusIds": [],
+			"getPetitionStats": true
+		},
+		"sorting": {
+			"path": "createdOn", // invitedByName, updatedOn, name, email, phone, statusName, roleName
+			"order": 1
+		},
+		"page": 1,
+		"perpage": 10,
+		"getMasterData": true,
+		"branchId": "61385e246fb4a09a415f0633", // Required when 'getMasterData' is true and roleIds are [4, 5, 6, 7, 8, 9, 10, 11]
+		"companyId": "6149b2b7e8429aa9642fc06d" // Required when 'getMasterData' is true and roleIds are [12, 13]
+	}
+
+-- User Details
+	Url: http://localhost:8989/users/details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json"
+	},
+	Payload: {
+		"userId":"5f1fcddaa3ff9e4c409b30e6"
+	}
+
+-- Get Login User Details
+	Url: http://localhost:8989/users/login-user-details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json"
+	},
+	Payload: {}
+
+-- Get petition list
+	Url: http://localhost:8989/petition/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"matcher": {
+			"searchString":"Innvectra Info Solutions",
+			"supervisorIds": ["5db7d79d6032453bd060ed9c"],
+			"paralegalIds": ["5db7d79d6032453bd060ed9c"],
+			"attorneyIds": ["5db7d79d6032453bd060ed9c"],
+			"petitionerIds": ["5db7d79d6032453bd060ed9c"],
+			"beneficiaryIds": ["5db7d79d6032453bd060ed9c"],
+			"offshoreUserIds": ["5db7d79d6032453bd060ed9c"],
+			"evidenceSupervisorIds": ["5db7d79d6032453bd060ed9c"],
+			"statusIds": [1],
+			"typeIds": [1],
+			"subTypeIds": [2],
+			"genders": ["male"],
+			"maritalStatusIds": [1],
+			"countryIds": [38],
+			"stateIds": [663],
+			"locationIds": [10093],
+			"createdDateRange": ["2019-12-02", "2019-12-03"],
+			"getMasterDataOnly": true // Send true when needs master data only
+		},
+		"page": 1,
+		"perpage":10,
+		"sorting": {
+			"path": "createdOn", updatedOn, createdByName, typeName, subTypeName, caseNo, statusName
+			"order": 1
+		}
+	}
+-- Create a petition
+	Url: http://localhost:8989/petition/create,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		{
+			"userId": "5dc3fd8eb3fe2334246e906d",
+			"userName":"Satish Kumar",
+			"type":1,
+			"typeName": "H-1B",
+			"subType":3,
+			"subTypeName":"Extension Only",
+			"today": "2019-12-01"
+		}
+	}
+-- Send Questionnaire
+	Url: http://localhost:8989/petition/send-questionnaire,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5ddbaf19154bb76dd47892dd",
+		"userName":"Satish Kumar",
+		"typeName": "H-1B",
+		"subTypeName":"NE Masters",
+		"instructions": "Testing Send Questionnaire"
+	}
+	
+-- Update petition/Submit Questionnaire
+	Url: http://localhost:8989/petition/update,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5ddd26e2e0103e655c0e4a77",
+			"userName":"Beneficiary",
+			"typeName": "H-1B",
+			"subTypeName":"Amendment",
+			"action": "SUBMIT_BY_BENEFICIARY", // BENEFICIARY_INFO_UPDATE / DEPENDENTS_INFO_UPDATE / CLIENT_INFO_UPDATE / UPLOAD_DOCUMENTS
+			"questionnaireFilled": true,// Set true when submit questionnaire
+			"questionnaireUpdate": true, // Set true when you are updating questionnaire
+			"beneficiaryInfo": {
+				"firstName": "Beneficiary",
+				"middleName": null,
+				"lastName": "1",
+				"gender": "male",
+				"email": "beneficiary-intake@yopmail.com",
+				"education": {
+					"highestDegree": 1,
+					"majorFieldOfStudy": "Electronics"
+				},
+				"maritalStatus": 1,
+				"dateOfBirth": "1990-04-12",
+				"homePhoneNumber": "4324343222",
+				"homePhoneCountryCode":  { 
+					"countryCode":"IN",
+					"countryCallingCode":"+91"
+				},
+				"cellPhoneNumber": "4324343232",
+				"cellPhoneCountryCode":  { 
+					"countryCode":"IN",
+					"countryCallingCode":"+91"
+				},
+				"iAmFromUS": true,
+				"address": {
+					"line1": "1-32",
+					"line2": "james Street",
+					"locationId": 10093,
+					"stateId": 663,
+					"countryId": 38,
+					"zipcode": "24244"
+				},
+				"consulateNotifyAddress": "1-98, Steven Lane, Los Angels, United States",
+				"SSN": "342-34-4312",
+				"hasI140ImmPetitionFiled": true,
+				"I140ImmPetitionFiledDetails": "Testing Filed Details",
+				"priorPeriodOfStayInUS": [
+					{
+						"enteredDate": "2019-04-12",
+						"departedDate": "2019-06-01",
+						"visaStatus": "H1B"
+					},
+					{
+						"enteredDate": "2019-08-15",
+						"departedDate": "2019-09-14",
+						"visaStatus": "H4"
+					}
+				]
+			},
+			"dependentsInfo": {
+				"spouse": {
+					"h4Required": true,
+					"h4EADRequired": true,
+					"firstName": "Wife",
+					"middleName": null,
+					"lastName": "1",
+					"email": "dasdsa@dasdsa.com",
+					"phoneNumber": "4324343222",
+					"phoneCountryCode":  { 
+						"countryCode":"IN",
+						"countryCallingCode":"+91"
+					},
+					"dateOfBirth": "1992-08-09",
+					"countryOfBirth": 101,
+					"countryOfCitizenship": 101,
+					"passportNumber": "JHHKH04342",
+					"passportExpiryDate": "2025-09-02",
+					"haveCreditReport": "Yes",
+					"haveCreditScore": "Yes",
+					"creditScore": 767,
+					"publicBenefits": [1,2,5],
+					"I94": "4324324423",
+					"arrivalDate": "2019-09-03",
+					"currentStatus": "H1B",
+					"statusExpiryDate": "2020-09-21",
+					"SSN": "322-32-3211",
+					"lastArrivalDate": "2019-09-23",
+					"placeOfLastEntryInUS": "Los Angels",
+					"address": {
+						"line1": "1-32",
+						"line2": "james Street",
+						"locationId": 10093,
+						"stateId": 663,
+						"countryId": 38,
+						"zipcode": "24244"
+					},
+					"documents": {
+						"passport": [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}],
+						"visa": [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}],
+						"formI94": [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}],
+						"formI797": [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}],
+						"marriageCertificate": [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}],
+						"noticeOfApprovalOfH1Status": [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}],
+						other: [{
+							"name": "New Sample.pdf",
+							"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+							"mimetype": "application/pdf"
+						}]
+					}
+				},
+				"childrens": [
+					{
+						"h4Required": true,
+						"firstName": "Children",
+						"middleName": null,
+						"lastName": "1",
+						"dateOfBirth": "2018-09-30",
+						"countryOfBirth": 101,
+						"countryOfCitizenship": 101,
+						"passportNumber": "HKHHK02423",
+						"passportExpiryDate": "2030-01-03",
+						"haveCreditReport": "Yes",
+						"haveCreditScore": "Yes",
+						"creditScore": 767,
+						"publicBenefits": [1,2,5],
+						"I94": "321321312",
+						"arrivalDate": "2019-02-09",
+						"currentStatus": "H1B",
+						"statusExpiryDate": "2025-08-04",
+						"documents": {
+							"passport": [{
+								"name": "New Sample.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf"
+							}],
+							"visa": [{
+								"name": "New Sample.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf"
+							}],
+							"formI94": [{
+								"name": "New Sample.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf"
+							}],
+							"birthCertificate": [{
+								"name": "New Sample.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf"
+							}],
+							approvalNotice: [{
+								"name": "New Sample.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf"
+							}],
+							other: [{
+								"name": "New Sample.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf"
+							}]
+						} 
+					}
+				]
+			},
+			"clientInfo": {
+				"name": "Innvectra Info Solutions",
+				"address": {
+					"line1": "1-87",
+					"line2": "james Street",
+					"locationId": 10093,
+					"stateId": 663,
+					"countryId": 38,
+					"zipcode": "24244"
+				}
+			},
+			"documents": {
+				"resume": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				},
+				{
+					"name": "New Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf"
+				}],
+				"education": [{
+					"name": "New Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf"
+				}],
+				"expLetters": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"INSNotices": [],
+				"I140ApprovalNotice": [],
+				"passportVisaI94": [],
+				"formI20": [],
+				"socialSecurityCardAndProfLicense": [],,
+				"payStubs": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"offerLetter": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"clientLetter": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"vendorLetter": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"msa": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"po": [{
+					"name": "Sample.pdf",
+					"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+					"mimetype": "application/pdf",
+					"uploadedOn": "2019-12-20T18:43:15.421Z",
+					"status": false
+				}],
+				"other": [
+					{
+						"name": "Sample.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"uploadedOn": "2019-12-20T18:43:15.421Z",
+						"status": false
+					},
+					{
+						"name": "New Sample.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf"
+					}
+				]
+			}
+		}
+-- Get petition details
+	Url: http://localhost:8989/petition/details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5ddbaf19154bb76dd47892dd"
+	}
+	
+-- Get petition activity list
+	Url: http://localhost:8989/petition/activity-list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5ddd26e2e0103e655c0e4a77",
+		"page": 1,
+		"perpage": 25
+	}
+-- Assign to petition
+	Url: http://localhost:8989/petition/assign-a-role,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5de62f8f87d1fc403012ef01",
+		"userId": "5de4a50f4db9fb255c0a9cee",
+		"userName": "Supervisor Name",
+		"roleId": 3,
+		"typeName": "H-1B",
+		"subTypeName": "Extension Only",
+		"comment": "Test Comment",
+		"action": "ASSIGN_SUPERVISOR" // "ASSIGN_PARALEGAL" / "ASSIGN_DOCUMENTATION_MANAGER" / "ASSIGN_DOCUMENTATION_EXECUTIVE" / "ASSIGN_ATTORNEY"
+		"lastUserName": "Paralegal" // is Required when replacing a paralegal(action == "REPLACE_PARALEGAL"),
+		"submitted": true // Required only when submitting to any roleSupervisor
+	}
+-- Approve a Paralegal
+	Url: http://localhost:8989/petition/approve-paralegal,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5de62f8f87d1fc403012ef01", 
+		"typeName": "H-1B",
+		"subTypeName": "Amendment"
+	}
+-- Upload scanned copies
+	Url: http://localhost:8989/petition/upload-scanned-copy,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5de62f8f87d1fc403012ef01",
+		"documents": [
+			{
+				"name": "Batchloer",
+				"typeId": 1,
+				"document": "path/batchelor.ppf",
+				"mimetype": "pdf"
+			},
+			{
+				"name": "Masters",
+				"typeId": 1,
+				"document": "path/masters.ppf",
+				"mimetype": "pdf"
+			}
+		]
+	}
+	
+-- Manage petition Main status for all roles
+	Url: http://localhost:8989/petition/manage-approval-process,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5dee1beb768de0433cc3ab57",
+		"comment": "Testing Send Questionnaire for Beneficiary 3",
+		"action": "SUBMIT_TO_LAW_FIRM", // "CASE_APPROVED" / "LCA_CERTIFIED_FOR_PETITION" / "SUBMIT_TO_USCIS" / "USICS_APPROVED" / "USICS_RECEIVED_RFE" / "USICS_DENIED" 
+		"today": "2019-12-23", // Required on Status changes to "Received RFE"
+		"typeName": "H-1B", // Required on Status changes to "Received RFE"
+		"toTypeName": "Amendment" // Required on Status changes to "Received RFE"
+		
+	}
+-- Delete scanned copy
+	Url: http://localhost:8989/petition/delete-scanned-copy,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"documentId": "5de9192cfdd7615054336c0a"
+	}
+	
+-- Generate Forms and Letters
+	Url: http://localhost:8989/petition/generate-forms-and-letters,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		Nonce": {{UUID}}"
+	},
+	Payload: {
+		"petitionId": "615ec882798c3782c084c286",
+		"uploadedformsAndLetters": [ // Required when we want fill other than configured forms and letters
+			{
+				"name": "131-Form.pdf",
+				"path": "/ref-docs/forms-and-letters/131-form-1633693613394.pdf",
+				"mimetype": "application/pdf",
+				"extn": "pdf"
+			}
+		]
+	}
+
+-- Forms and Letters List
+	Url: http://localhost:8989/petition/filled-forms-and-letters-list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId":"615ec882798c3782c084c286",
+		"page":1,
+		"perpage":10
+	}
+
+	
+-- Upload a File to S3
+	Url: http://localhost:8989/s3/upload,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"files": "Files Buffer",
+		"secureType": "public" // Don't Send if you want it as private,
+		"getDetails": true // Send "true" when required ext, mimetype and name as well 
+	}
+	
+-- Manage missing documents for Petition
+	Url: http://localhost:8989/petition/manage-required-documents,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5de62f8f87d1fc403012ef01",
+		"action": "REQUEST_MISSING_DOCUMENTS", // "RECEIVED_MISSING_DOCUMENTS" / "REQUEST_MISSING_FORMS_AND_LETTER_DOCS" / "RECEIVED_MISSING_FORMS_AND_LETTER_DOCS"
+		"comment": "<ul><li>Upload Resume</li><li>Upload Batchlors Marks list</li></ul>" // Required for "REQUEST_MISSING_DOCUMENTS" / "REQUEST_MISSING_FORMS_AND_LETTER_DOCS"
+	}
+	
+-- Get a signed URL for a specific key
+	Url: http://localhost:8989/s3/get-signed-url,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"keyName":"intake/public/b/6/9/b69284e011e511ea910db32f2dd18338.png"
+	}
+	
+-- Delete a File from S3
+	Url: http://localhost:8989/s3/delete,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"keyName":"intake/public/b/6/9/b69284e011e511ea910db32f2dd18338.png"
+	}
+
+-- Get Notification List
+	Url: http://localhost:8989/notify/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"page":1,
+		"perpage":10,
+		"sorting": {
+			"path": "createdOn", updatedOn
+			"order": 1
+		}
+	}
+
+-- Remove Notification
+	Url: http://localhost:8989/notify/remove,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"notifyId": "5f649fe34537c21d084c4b74", // Send if you want to remove specific Notification
+		"removeAll": true // Send as "true" if want to remove all
+	}
+-- Request an LCA
+	Url: http://localhost:8989/lca/request,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"action": "LCA_REQUEST", //LCA_SUBMIT
+		"typeName": "H1B",
+		"subTypeName": "New Employment",
+		"petitionId": "5de62f8f87d1fc403012ef01",
+		"today": "2019-12-03",
+		"petitionCaseNo":"1203201900003",
+		"beneficiaryName": "Beneficiary",
+		"petitionerName": "My Petition Company",
+		"clientName":"TCS",
+		"jobTitle":"MongoDb Developer",
+		"jobDuties": "Design, Integration and Development",
+		"mastersDegree": {
+			"schoolName":"PDCE",
+			"major":"Electranics"
+		},
+		"desiredSOCCode": "DS-431",
+		"workAddress": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 674,
+			"countryId": 231,
+			"zipcode": "42323",
+			"workLocation": true
+		},
+		"secondaryWorkAddress": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 674,
+			"countryId": 231,
+			"zipcode": "42323",
+			"workLocation": false
+		},
+		"wageLevel": 2,
+		"salary": "10000.99",
+		"number": "KHHJ423432", // Required  when uploading LCA
+		"documents": {
+			"formETA9035And9035E": [],
+			"certifiedLCA": [{
+                "name": "Sample LCA.pdf",
+                "url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+                "mimetype": "application/pdf",
+                "uploadedOn": "2019-12-20T18:43:15.421Z",
+                "status": false
+            }]
+		}
+	}
+
+-- LCA List
+	Url: http://localhost:8989/lca/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"matcher": {
+			"searchString":"L1204",
+			"petitionerIds": ["5de4ad25d1ba7e3a44f511b6"],
+			"statusIds": [1],
+			"typeIds": [1, 3],
+			"countryIds": [231],
+			"stateIds": [663, 674],
+			"locationIds": [10093, 4234],
+			"createdDateRange": ["2019-12-01", "2019-12-07"]
+		},
+		"page": 1,
+		"perpage":10,
+		"sorting": {
+			"path": "createdOn", updatedOn, createdByName, caseNo, statusName
+			"order": 1
+		}
+	}
+	
+-- LCA details
+	Url: http://localhost:8989/lca/details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"lcaId": "5de669722109e026643f06f2"
+	}
+	
+-- LCA update
+	Url: http://localhost:8989/lca/update,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"lcaId": "5de669722109e026643f06f2",
+		"action": "LCA_SUBMIT",
+		"innerAction": "UPDATE_BASIC_INFO", // "UPDATE_LCA_NUMBER" / "UPDATE_FILIED_DATE" / "UPDATE_CERTIFIED_DATE" / "UPLOAD_DOCUMENTS"
+		"actionTitle":"Basic information updated",
+		"actionDescription":"Basic information updated by LCA Manager",
+		"updateType": "basic-info", // "lca-number" / "filed-date" / "certified-date" / "documents"
+		/*** Basic Information ***/
+		"clientName":"Wipro",
+		"jobTitle":"NodeJS Developer",
+		"jobDuties": "Design, Integration and Development..",
+		"mastersDegree": {
+			"schoolName":"Priyadharshini College of Engineering",
+			"major":"Electranics and Communications"
+		},
+		"desiredSOCCode": "DS-431",
+		"workAddress": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 674,
+			"countryId": 38,
+			"zipcode": "42323",
+			"workLocation": true
+		},
+		"secondaryWorkAddress": {
+			"line1": "1-33",
+			"line2": "James Street",
+			"locationId": 4234,
+			"stateId": 674,
+			"countryId": 231,
+			"zipcode": "42323",
+			"workLocation": false
+		},
+		"wageLevel": 2,
+		"salary": "10000.99",
+		/*** LCA Number/ or DOL Reference Number ***/
+		"number": "KHHJ423432",
+		/*** Filed Date ***/
+		"filedDate": "2019-12-01",
+		/*** Certified Date ***/
+		"certifiedDate": "2019-12-01",
+		/*** Documents ***/
+		"documents": [{
+			"name": "Sample formETA9035And9035E.pdf",
+			"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+			"mimetype": "application/pdf",
+			"uploadedOn": "2019-12-20T18:43:15.421Z",
+			"status": false
+		}],
+		"statusId": 2, // Can send if you want to change status from 'Initiated' to 'In Progress'
+		"statusName":"In Progress"
+	}
+	 
+-- LCA update status
+	Url: http://localhost:8989/lca/update-status,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"lcaId": "5de7824844334f50ac33dcdb",
+		"statusId": 3,
+		"statusName": "Certified",
+		"documents": [{
+			"name": "Sample formETA9035And9035E.pdf",
+			"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+			"mimetype": "application/pdf",
+			"uploadedOn": "2019-12-20T18:43:15.421Z",
+			"status": false
+		}],
+	}
+-- LCA activity list
+	Url: http://localhost:8989/lca/activity-list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"lcaId": "5de669722109e026643f06f2",
+		"page": 1,
+		"perpage":10
+	}
+
+-- Save Documents
+	Url: http://localhost:8989/documents/save,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"entityType": 1,
+		"entityId": "5de62f8f87d1fc403012ef01",
+		"documents": [
+			{
+				"name": "sample1.png",
+				"typeId": 1,
+				"path": "/samplepath/sample1.png",
+				"mimetype": "png"
+			},
+			{
+				"name": "sample2.png",
+				"typeId": 2,
+				"path": "/samplepath/sample2.png",
+				"mimetype": "png"
+			},
+			{
+				"name": "sample3.png",
+				"typeId": 3,
+				"path": "/samplepath/sample3.png",
+				"mimetype": "png"
+			}
+		]
+	}
+
+-- List Documents
+	Url: http://localhost:8989/documents/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"page": 1,
+		"perpage": 10
+	}
+
+-- Delete Documents
+	Url: http://localhost:8989/documents/delete,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"documentId": "5de9f59fdfcd234318eab1c6"
+	}
+
+-- Courier Tracking
+	Url: http://localhost:8989/petition/manage-tracking-details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5dee1beb768de0433cc3ab57",
+		"trackingId": "Asq12m97sdGR329",
+		"trackingUrl": "https://www.fedex.com/apps/fedextrack/?action=track",
+		"action": "UPDATE_TRACKING_NUMBER", // "UPDATE_USICS_RECEIPT_NUMBER"
+		"receiptName": "Sample Receipt 2",
+		"receiptNumber": "B765quD91pOsa7W",
+		"documents": [{
+			"name": "",
+			"url": "https://intakeportal.s3.amazonaws.com/intake/public/1/8/c/18c50010234911eaafc3a90532b7999a.png",
+			"mimetype": "images/png"
+		}],
+	}
+	 
+-- Save Filing Fee
+	Url: http://localhost:8989/petition/save-filing-fees,
+	 Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"filingFeeData":[
+			{
+				"amount": 500,
+				"description": "Sample Description 1"
+			},
+			{
+				"amount": 1524,
+				"description": "Sample Description 2"
+			},
+			{
+				"amount": 473,
+				"description": "Sample Description 3"
+			}
+		],
+		"petitionId": "5de4ba7b7a06f2079c267e93"
+		"typeName": "H1B",
+		"subTypeName": "New Employment"
+	}
+	 
+-- Send for signature
+	Url: http://localhost:8989/petition/request-for-petitioner-sign,
+	 Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5de4ba7b7a06f2079c267e93",
+		"formsAndLetters": ["6161508d7550894f88aebc04", "6161508e7550894f88aebc06"],
+  		"typeName": "H1B",
+  		"subTypeName": "New Employment"
+	}
+	
+-- Dashboard
+	Url: http://localhost:8989/dashboard,
+	 Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {}
+
+-- Petition documents download as PDF
+	Url: http://localhost:8989/petition/generate-pdf,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5de4ba7b7a06f2079c267e93",
+		"documents": [
+			'https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf',
+			'https://intakeportal.s3.amazonaws.com/intake/private/0/e/2/0e29c1a0234311ea982cef63ec1cae37.pdf',
+			'https://intakeportal.s3.amazonaws.com/intake/private/1/2/3/123e5f80234311ea91e7c32677cefd23.pdf',
+			'https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf'
+		]
+	}
+
+-- Petition on category download
+	Url: http://localhost:8989/petition/download-details-as-pdf,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5de4ba7b7a06f2079c267e93",
+		"categories": [
+			"petition-documents", "scanned-documents", "forms-and-letters"
+		]
+	}
+
+	
+-- Upload Forms and Letters
+	Url: http://localhost:8989/petition/upload-forms-and-letters,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json"
+	},
+	Payload: {
+		"petitionId": "5e00bcbb8dfc1137fc8582cc",
+		"formLetterType": "Form", // 'Letter'
+		"parentId": "6189226c8d2a07356c289239", // Required to save the version
+		"documents": [
+			{
+				"name": "TEST DOCUMENT.docx",
+				"path": "https://s3.ap-south-1.amazonaws.com/immibox/innvectra/private/5/2/1/521b9c2040a711ecaba8e5b2f42d1dba.docx",
+				"mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+				"extn": "docx"
+			}
+		]
+	}
+
+
+-- Delete Forms and Letters
+	Url: http://localhost:8989/petition/delete-forms-and-letters,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"documentId": "5de9192cfdd7615054336c0a"
+	}
+
+-- Downlod Forms and Letters
+	Url: http://localhost:8989/petition/download-forms-letters,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5e00bcbb8dfc1137fc8582cc"
+	}
+	
+-- Get RFE petition list
+	Url: http://localhost:8989/rfe-petition/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"matcher": {
+			"searchString":"IBM",
+			"supervisorIds": ["5de4a50f4db9fb255c0a9cee"],
+			"paralegalIds": ["5de4a5bc4db9fb255c0a9cf3"],
+			"attorneyIds": ["5de4a68f3f265070080ad945"],
+			"petitionerIds": ["5de4ad25d1ba7e3a44f511b6"],
+			"beneficiaryIds": ["5dee003e2289d41e08901ade"],
+			"offshoreUserIds": ["5dedf90501730a21fcb5d816"],
+			"evidenceSupervisorIds": [],
+			"statusIds": [1, 2],
+			"typeIds": [1],
+			"subTypeIds": [1, 5],
+			"genders": ["male"],
+			"maritalStatusIds": [1],
+			"countryIds": [38],
+			"stateIds": [663],
+			"locationIds": [10093],
+			"createdDateRange": ["2019-12-23", "2019-12-23"],
+			"getMasterDataOnly": true
+		},
+		"page": 1,
+		"perpage":10
+	}
+	
+-- Get RFE petition details
+	Url: http://localhost:8989/rfe-petition/details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5ddbaf19154bb76dd47892dd"
+	}
+	
+-- Get RFE petition activity list
+	Url: http://localhost:8989/rfe-petition/activity-list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5ddd26e2e0103e655c0e4a77",
+		"page": 1,
+		"perpage": 25
+	}
+	
+-- Manage FRE Notice
+	Url: http://localhost:8989/rfe-petition/manage-rfe-notice,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5dee4a1114db1956fcac5cbb",
+		"documents": [
+			"samplePath/sample_support_docs_1.pdf"
+		],
+		"issuedDate": "2019-12-20",
+		"receivedDate": "2019-12-21",
+		"dueDate": "2019-12-30",
+		"description": "RFE Notice Description..",
+		"typeName": "H-1B",
+		"subTypeName": "Amendment"
+	}
+
+
+-- Assign a role to RFE petition
+	Url: http://localhost:8989/rfe-petition/assign-a-role,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5de62f8f87d1fc403012ef01",
+		"userId": "5de4a50f4db9fb255c0a9cee",
+		"userName": "Supervisor Name",
+		"roleId": 3,
+		"typeName": "H-1B",
+		"subTypeName": "Extension Only",
+		"comment": "Test Comment",
+		"action": "ASSIGN_SUPERVISOR" // "ASSIGN_PETITIONER" / "ASSIGN_PARALEGAL" / "REPLACE_PARALEGAL" / "ASSIGN_OFFSHORE_USER" / "ASSIGN_EVIDENCE_SUPERVISOR" / "ASSIGN_ATTORNEY"
+		"lastUserName": "Paralegal" // is Required when replacing a paralegal(action == "REPLACE_PARALEGAL"),
+		"submitted": true // Required only when submitting to any roleSupervisor
+	}
+
+-- Notify missing documents by paralegal
+	Url: http://localhost:8989/rfe-petition/upload-rfe-response-docs,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5e00bcbb8dfc1137fc8582cc",
+		"documents": [
+			{
+				"name": "Test DOcument 1",
+				"document": "https://intakeportal.s3.amazonaws.com/intake/public/1/8/c/18c50010234911eaafc3a90532b7999a.png",
+				"mimetype": "images/png" 
+			},
+			{
+				"name": "Test DOcument 2",
+				"document": "https://intakeportal.s3.amazonaws.com/intake/public/1/7/a/17af7160234911eaafc3a90532b7999a.png",
+				"mimetype": "images/png" 
+			}
+		]
+	}
+	 
+-- Delete RFE response document
+	Url: http://localhost:8989/rfe-petition/delete-rfe-response-document,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"documentId": "5de9192cfdd7615054336c0a"
+	}
+	
+	
+-- Upload RFE scanned copies
+	Url: http://localhost:8989/rfe-petition/upload-scanned-copy,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5e00bcbb8dfc1137fc8582cc",
+		"documents": [
+			{
+				"name": "Batchloer",
+				"typeId": 1,
+				"document": "https://intakeportal.s3.amazonaws.com/intake/public/0/c/0/0c0e0b60233411ea9ba3b1aa9f6fe44f.png",
+				"mimetype": "pdf"
+			},
+			{
+				"name": "Masters",
+				"typeId": 2,
+				"document": "https://intakeportal.s3.amazonaws.com/intake/public/0/c/d/0cd30910233411ea9ba3b1aa9f6fe44f.png",
+				"mimetype": "pdf"
+			}
+		]
+	}
+	 
+-- Delete RFE scanned copy
+	Url: http://localhost:8989/rfe-petition/delete-scanned-copy,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"documentId": "5de9192cfdd7615054336c0a"
+	}
+	
+-- Upload RFE Forms and Letters
+	Url: http://localhost:8989/rfe-petition/upload-forms-and-letters,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionId": "5e00bcbb8dfc1137fc8582cc",
+		"documents": [
+			{
+				"name": "Instructions for Form I-129",
+				"typeId": 1,
+				"document": "https://intakeportal.s3.amazonaws.com/intake/public/1/7/a/17af7160234911eaafc3a90532b7999a.png",
+				"mimetype": "pdf"
+			},
+			{
+				"name": "OptionalChecklistforFormI-129H-1BFiling",
+				"typeId": 2,
+				"document": "https://intakeportal.s3.amazonaws.com/intake/public/1/8/c/18c50010234911eaafc3a90532b7999a.png",
+				"mimetype": "pdf"
+			}
+		]
+	}
+
+-- Delete RFE Forms and Letters
+	Url: http://localhost:8989/rfe-petition/delete-forms-and-letters,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"documentId": "5de9192cfdd7615054336c0a"
+	}
+	
+-- Manage petition Main status for all roles
+	Url: http://localhost:8989/rfe-petition/manage-approval-process,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5dee1beb768de0433cc3ab57",
+		"comment": "Testing for case approval",
+		"action": "CASE_APPROVED", / "SUBMIT_TO_USCIS" / "USICS_APPROVED" / "USICS_DENIED" 
+		"today": "2019-12-23", // Required on Status changes to "Received RFE"
+		"typeName": "H-1B", // Required on Status changes to "Received RFE"
+		"toTypeName": "Amendment" // Required on Status changes to "Received RFE"
+		
+	}
+-- Manage missing documents for RFE Petition
+	Url: http://localhost:8989/rfe-petition/manage-required-documents,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5de62f8f87d1fc403012ef01",
+		"action": "REQUEST_MISSING_DOCUMENTS", // "RECEIVED_MISSING_DOCUMENTS" / "REQUEST_MISSING_FORMS_AND_LETTER_DOCS" / "RECEIVED_MISSING_FORMS_AND_LETTER_DOCS"
+		"comment": "<ul><li>Upload Resume</li><li>Upload Batchlors Marks list</li></ul>" // Required for "REQUEST_MISSING_DOCUMENTS" / "REQUEST_MISSING_FORMS_AND_LETTER_DOCS"
+	}
+	
+-- Notify missing documents by paralegal
+	Url: http://localhost:8989/rfe-petition/notify-missing-docs,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5dee4a1114db1956fcac5cbb",
+		"documents": [
+			"samplePath/sample_support_docs_1.pdf"
+		]
+	}
+
+-- Courier Tracking for RFE Petition
+	Url: http://localhost:8989/rfe-petition/manage-tracking-details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"petitionId": "5dee1beb768de0433cc3ab57",
+		"trackingId": "Asq12m97sdGR329",
+		"trackingUrl": "https://www.fedex.com/apps/fedextrack/?action=track",
+		"action": "UPDATE_TRACKING_NUMBER", // "UPDATE_USICS_RECEIPT_NUMBER"
+		"receiptName": "Sample Receipt 2",
+		"receiptNumber": "B765quD91pOsa7W",
+		"documents": "documents": [{
+			"name": "",
+			"url": "https://intakeportal.s3.amazonaws.com/intake/public/1/8/c/18c50010234911eaafc3a90532b7999a.png",
+			"mimetype": "images/png"
+		}],
+	}
+	 
+-- Manage Filing Fee for RFE Petition
+	Url: http://localhost:8989/rfe-petition/request-for-petitioner-sign,
+	 Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"filingFeeData":[
+			{
+				"amount": 500,
+				"description": "Sample Description 1"
+			},
+			{
+				"amount": 1524,
+				"description": "Sample Description 2"
+			},
+			{
+				"amount": 473,
+				"description": "Sample Description 3"
+			}
+		],
+		"petitionId": "5de4ba7b7a06f2079c267e93"
+	}
+-- Update user profile details.
+	Url: http://localhost:8989/users/update-profile-picture,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"profilePicture": "https://intakeportal.s3.amazonaws.com/intake/public/5/5/2/552d4640264911ea9b5e5bf33f178bec.png" 
+	}
+
+-- Update FCM Token
+	Url: http://localhost:8989/users/update-fcm-token,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json"
+	},
+	Payload: {
+		"fcmToken": "dUhIdDf_SVaBFuSwSOaMCP:APA91bGvLV0sObb8WS1WJf0kXxD2C3S2MVNtz8IqGbYaxxJI_qgibQ10iZh2bo_qpbpiLZlO7xO8d0KkuTYRUg-pjLc9R7BKlFI-UVyMFxG3_VwusTomw6D-Ah9u73ntpTHS33tAx1C7"
+	}
+
+-- Authorize Quickbooks
+	Url: http://localhost:8989/quickbook/customer-availability
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"email": "Baluk@Intuit.com",
+		"companyId": {{companyid}},
+		"billAddr": {
+			"Line1": "123 Main Street",
+			"City": "Mountain View",
+			"Country": "USA",
+			"CountrySubDivisionCode": "CA",
+			"PostalCode": "94042"
+		},
+		"notes": "Here are other details.",
+		"displayName": "King's Groceries1",
+		"primaryPhone": {
+			"FreeFormNumber": "(555) 555-5555"
+		},
+		"primaryEmail": {
+			"Address": "Baluk@Intuit.com"
+		}
+	}
+
+-- Create Support Ticket
+	Url: http://localhost:8989/support-tickets/create
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"typeId": 1, 1. Operational 2. Technical
+		"priorityId": 3, // 1.High 2.Medium 3.Low
+		"subject":"Can not download documents By Tenant Admin.",
+		"description": "I am unable to download Petition documents.",
+		"attachments": [{
+			"name": "w3dummy.pdf",
+			"path": "https://s3.ap-south-1.amazonaws.com/immibox/global/private/1/6/f/16f89ac0327011ecbd69cdc30a33d323.pdf",
+			"mimetype": "application/pdf",
+			"extn": "pdf"
+		}],
+		"today": "2021-10-21"
+	}
+	
+-- Get Assign users list
+	Url: http://localhost:8989/support-tickets/get-assign-users
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"ticketId": "6177d83bf11af7c1e446785a"
+	}
+
+-- Assign support ticket
+	Url: http://localhost:8989/support-tickets/assign
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"ticketId": "6177d83bf11af7c1e446785a",
+		"assignedTo": "61375185fe5a85ac09090143",
+		"assignedToName": "Admin",
+		"assignedToRoleId": 3,
+		"assignedToRoleName": "Admin"
+	}
+ 
+-- Update support ticket
+	Url: http://localhost:8989/support-tickets/update
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"ticketId": "5fb37c3456cc37386c8239ef",
+		"subject": "Can not create an Petition.2",
+		"description": "I am unable to create an application.2",
+		"attachments": [{
+			"name" : "New Sample2.pdf",
+			"path" : "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+			"mimetype" : "application/pdf"
+		}]
+	}
+
+-- Support ticket details
+	Url: http://localhost:8989/support-tickets/details
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"ticketId": "5fb37c3456cc37386c8239ef"
+	}
+
+-- Support ticket list
+	Url: http://localhost:8989/support-tickets/list
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"matcher": {
+			"title": "INTK-TK",
+			"statusIds": [1, 2, 4],
+			"assignedToIds": ["5de4a68f3f265070080ad945"],
+			"priorityIds": [2],
+			"createdByIds": ["5de4f0957573e61e381688ea"],
+			"dateRange": ["2021-10-17", "2021-12-18"],
+			"tenantIds": ["5de4a68f3f265070080ad945"],
+			"typeIds": [1, 2]
+		},
+		"page": 1,
+		"perpage": 10,
+		"sorting": {
+			"path": "tenantName", // createdByName, statusName, typeName, customIdSNo, createdOn, updatedOn, subject
+			"order": -1
+		}
+	}
+
+-- Comment support ticket
+	Url: http://localhost:8989/support-tickets/comment
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"ticketId": "6172d8172ad3483d6cdee8fa",
+  		"commentTypeId": 2, // Optional and Send 2 for Internal Comment
+		"statusId": 4,
+		"description": "Need more information...444",
+		"attachments": [{
+			"name" : "New Sample22.pdf",
+			"path": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+			"mimetype" : "application/pdf"
+		}],
+		"today": "2021-10-25"
+	}
+
+-- Comment list
+	Url: http://localhost:8989/support-tickets/comment-list
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+		"ticketId": "5fb37c3456cc37386c8239ef"
+	}
+
+-- Support ticket update priority
+	Url: http://localhost:8989/support-tickets/update-priority
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+	},
+	Payload: {
+  		"ticketId":  "617a69dcf21e3933104bd77a",
+  		"priorityId": 1,
+		"priorityName": "High"// Low, Medium
+	}
+
+-- 23/06/2020
+-- Manage Document upload option for a petition
+		Url: http://localhost:8989/petition/manage-document-upload
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5dfcff9c0a252a50388ad200", 
+			"typeName": "H1B",
+			"subTypeName": "Amendment",
+			"action": "ENABLE_DOCUMENT_UPLOAD", //DISABLE_DOCUMENT_UPLOAD(Send this action to confirm once done with upload)
+			"comment": "Testing Enable document upload" // Required for ENABLE_DOCUMENT_UPLOAD
+		}
+		
+-- Communications
+		-- Get Users list for a specific Petition
+			Url: http://localhost:8989/communication/user-list
+			Method: POST,
+			Headers: {
+				"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"Content-Type": "application/json",
+			},
+			Payload: {
+				"petitionId":"5df47b2b6b124a4a6ca161b6",
+				"petitionType": "GC" // 'RFE', 'NORMAL'
+			}
+			
+-- Save a conversation
+			Url: http://localhost:8989/communication/save
+			Method: POST,
+			Headers: {
+				"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"Content-Type": "application/json",
+			},
+			Payload: {
+				"petitionId":"5dfcff9c0a252a50388ad200",
+				"petitionCaseNo": "1220201900008",
+				"message": "222222222...",
+				"toUserId": "5de4ad25d1ba7e3a44f511b6" // recipient user id
+			}
+-- Get most recent conversations
+			Url: http://localhost:8989/communication/list
+			Method: POST,
+			Headers: {
+				"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"Content-Type": "application/json",
+			},
+			Payload: {
+				"petitionId": "615e90ba4fab7319aa7ba0da",
+				"page": 1,
+				"perpage": 10
+			}
+-- Mark conversation messages as read
+			Url: http://localhost:8989/communication/mark-as-read
+			Method: POST,
+			Headers: {
+				"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"Content-Type": "application/json",
+			},
+			Payload: {
+				"messageIds": ["5ef19e22eadabc6e88946700"] // Communications ids list
+			}
+		
+-- Bulk replace
+		Url: http://localhost:8989/petition/entity-bulk-replace
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+		  "action":"REPLACE_ATTORNEY", // REPLACE_PARALEGAL, REPLACE_SUPERVISOR
+		  "petitionIds": ["5dee1beb768de0433cc3ab57"],
+		  "replaceId":"5de4a68f3f265070080ad945", // Replace user ID
+		  "replaceRoleId":5,
+		  "petitionCategory":"standard", // "rfe" for RFE petition
+		  "comment":"Replacing Comment."
+		}
+
+-- Get petition stats by login user
+		Url: http://localhost:8989/petition/get-stats-by-user
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {}
+
+
+-- Save Reminder
+		Url: http://localhost:8989/reminders/save
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"name":"Registration",
+			"description": "Sample description",
+			"dueDate": "2021-10-27"
+		}
+-- Reminder List
+		Url: http://localhost:8989/reminders/list
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"page": 1,
+			"perpage": 10,
+			"today": "2021-10-27",
+			"matcher": {
+				"title": "",
+				"statusIds": [1, 2],
+				"createdDateRange": ["2020-08-01", "2020-08-30"],
+				"dueDateRange": ["2020-08-01", "2020-08-30"]
+			},
+			"sortKeys": { "name": 1 }
+		}
+-- Update Reminder
+		Url: http://localhost:8989/reminders/update
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"reminderId": "5f3522c27ecff11f4060f699",
+			"name": "Registration Process",
+			"description":"Sample Registration Process",
+			"dueDate": "2021-10-27"
+		}
+-- Update Status of Reminder
+		Url: http://localhost:8989/reminders/update-status
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"reminderId": "5f3522c27ecff11f4060f699",
+			"statusId": 2,
+			"statusName" : "Removed" // completed, Active
+		}
+	
+	
+-- Create an invoice
+		Url: http://localhost:8989/invoices/create
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"companyName": "Innvectra Infor Solutions",
+			"beneficiaryName": "Satish Kumar",
+			"beneficiaryCustomId": "INTK-PET-2",
+			"petitionType": "standard", // rfe
+			"petitionId": "5de62f7787d1fc403012eef9",
+			"companyId": "5de4ad25d1ba7e3a44f511bb",
+			"feeDetails": [{
+				"amount": 100,
+				"description": "Fee for processing"
+			}, {
+				"amount": 300,
+				"description": "Fee for Internal Activities"
+			}],
+			"amount": 400,
+			"today": "2020-08-14",
+			"dueDate": "2020-09-13", // Date based oninvoice terms days
+			"customer": {
+				"Id": "104",
+				"displayName": "Petition Filing Company 2",
+				"email": "petitioner-intake@yopmail.com"
+			},
+			"invoiceTerms": {
+				"days": 30
+			},
+			"comment": "test Comment", // Optional
+  			"emailInvoice": true
+		}
+	
+-- Invoice List
+		Url: http://localhost:8989/invoices/list
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"page": 1,
+			"perpage": 10,
+			"matcher": {
+				"title": "INN-SAT",
+				"statusIds": [3, 6],
+				"companyIds": ["5de4ad25d1ba7e3a44f511bb"],
+				"createdByIds": ["5de4a4ec4db9fb255c0a9ced"],
+				"createdDateRange": ["2020-08-01", "2020-08-30"],
+				"dueDateRange": ["2020-08-01", "2020-09-30"]
+			}
+		}
+	
+-- Invoice Details
+		Url: http://localhost:8989/invoices/details
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"invoiceId": "5f3661dc13acaf3b307f8b68"
+		}
+	
+-- Invoice Update
+		Url: http://localhost:8989/invoices/update
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"invoiceId": "5f3661dc13acaf3b307f8b68",
+			"amount": 1000,
+			"description": "Sample Registration Process",
+			"dueDate": "2020-08-30",
+			"feeDetails": [{
+				"_id": "5f36be629c31c52b1c364b8f",
+				"amount": 100,
+				"description": "Fee for processing"
+			},
+			{
+				"_id": "5f36be629c31c52b1c364b8e",
+				"amount": 300,
+				"description": "Fee for Internal Activities"
+			}, {
+				"amount": 600,
+				"description": "Fee for Internal Activities"
+			}],
+			"customer": {
+				"Id": "104",
+				"displayName": "Petition Filing Company 2",
+				"email": "petitioner-intake@yopmail.com"
+			},
+			"comment": "test Comment",
+			"statusId": 1,
+			"statusName": "Not Sent",
+			"emailInvoice": true
+		}
+
+-- Invoice Update Payment
+		Url: http://localhost:8989/invoices/update-payment
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"invoiceId": "5f3661dc13acaf3b307f8b68",
+			"statusId": 5,
+			"statusName": "Partially Paid",
+			"paymentDate": "2020-08-13",
+			"customer": {
+				"Id":"104",
+				"displayName": "Petition Filing Company 2",
+				"email": "petitioner-intake@yopmail.com"
+			},
+			"comment": "test Comment..",
+			"partlyPaidAmount": 200,
+			"paymentMethodId": 2,
+			"paymentRefNo": "HHHH-343"
+		}
+
+
+-- Save Quickbooks configuration
+		Url: http://localhost:8989/quickbooks/save-config
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"clientId":"ABEo9fOpqoTPb3ohL8naVOEzgaBfY70MvPFfRe1ocmsrEKgcRl",
+			"clientSecret": "bao6zbgrP89xmq3IcS5zArg1qSRNlhJZxH2PTJCX",
+			"webhookVerifierToken": "d759f6dd-0b6f-4552-83e6-022526d966ca",
+			"redirectUri": "http://localhost:8989/quickbooks/create-token",
+			"getRedirectUrl": true
+		}
+
+-- Save Quickbooks Create customer and link with company
+		Url: http://localhost:8989/quickbooks/create-customer
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"companyId": "5de4ad25d1ba7e3a44f511bb",
+			"name":"Petition Filing Company 2",
+			"email": "petitioner-intake@yopmail.com",
+			"phone": "6544656532",
+			"line": "1-33,James Street",
+			"city": "Los Angels",
+			"state": "LA",
+			"country": "USA",
+			"zipcode": "42323"
+		}
+
+-- Link Company with Quickbooks Customer
+		Url: http://localhost:8989/quickbooks/link-customer
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"companyId": "5de4ad25d1ba7e3a44f511bb",
+			"customerId":"104"
+		}
+
+-- Get Quickbooks customers list
+		Url: http://localhost:8989/quickbooks/get-customers-list
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"name": "Petition Filing Company"
+		}
+
+-- Get Quickbooks customer details
+		Url: http://localhost:8989/quickbooks/get-customer
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"customerId": "104",
+			"retriveType": "masterdata" // Required to return only ID and Name
+		}
+
+-- Get Quickbooks customer details
+		Url: http://localhost:8989/quickbooks/get-customer
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"customerId": "104",
+			"retriveType": "masterdata" // Required to return only ID and Name
+		}
+
+/**  GC Petitins **/
+
+-- Create a petition
+		Url: http://localhost:8989/gc-petition/create,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"name": "GC Beneficiary 1",
+			"email": "gcbeneficiaty1-intake@yopmail.com",
+			"today": "2020-10-03"
+		}
+
+-- Get petition list
+		Url: http://localhost:8989/gc-petition/list,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"matcher": {
+				"searchString":"",
+				"attorneyIds": ["5db7d79d6032453bd060ed9c"],
+				"paralegalIds": ["5db7d79d6032453bd060ed9c"],
+				"beneficiaryIds": ["5db7d79d6032453bd060ed9c"],
+				"statusIds": [1],
+				"genders": ["male"],
+				"maritalStatusIds": [1],
+				"countryIds": [38],
+				"stateIds": [663],
+				"locationIds": [10093],
+				"createdDateRange": ["2020-10-02", "2020-10-03"],
+				"statuses": ["active", "delete"],
+				"getMasterDataOnly": true // Send true when needs master data only
+			},
+			"page": 1,
+			"perpage":10
+		}
+		
+-- Update petition/Submit Questionnaire
+		Url: http://localhost:8989/gc-petition/update,
+			Method: POST,
+			Headers: {
+				"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"Content-Type": "application/json",
+				"Nonce": {{UUID}}
+			},
+			Payload: {
+				"petitionId": "5f788d3fcb308e4ef89b7544",
+				"userName": "Beneficiary 1",
+				"action": "BENEFICIARY_INFO_UPDATE", // SPOUSE_INFO_UPDATE, CHILDREN_INFO_UPDATE, SUBMIT_BY_BENEFICIARY 
+				"updateSection": "BENEFICIARY_INFO_UPDATE", SPOUSE_INFO_UPDATE, CHILDREN_INFO_UPDATE,
+				"questionnaireFilled": false, // true: On Submit Questionnaire , false: On Update Questionnaire
+				"beneficiaryInfo": {
+					"firstName": "Beneficiary",
+					"middleName": "GC",
+					"lastName": "1",
+					"allOtherNamesUsed": [{
+							"firstName": "Beneficiary",
+							"middleName": "GC",
+							"lastName": "1"
+						},
+						{
+							"firstName": "Beneficiary",
+							"middleName": "GC",
+							"lastName": "2"
+						},
+						{
+							"firstName": "Beneficiary",
+							"middleName": "GC",
+							"lastName": "3"
+						}
+					],
+					"email": "beneficiary-intake@yopmail.com",
+					"address": {
+						"line1": "1-32",
+						"line2": "james Street",
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						},
+						"zipcode": "24244"
+					},
+					"mailingAddressIsSameAsAddress": false,
+					"mailingAddress": {
+						"line1": "1-32",
+						"line2": "james Street",
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						},
+						"zipcode": "24244"
+					},
+					"phoneNumber": "4324343222",
+					"phoneCountryCode":  { 
+						"countryCode":"IN",
+						"countryCallingCode":"+91"
+					},
+					"dayTimePhoneNumber": "4324343222",
+					"dayTimePhoneCountryCode":  { 
+						"countryCode":"IN",
+						"countryCallingCode":"+91"
+					},
+					"gender": "Male",
+					"dateOfBirth": "1990-04-12",
+					"placeOfBirth": {
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						}
+					},
+					"nameDiffFromBirthCert": "No",
+					"birthCertHaveNamePobDob": "No",
+					"have2AffidavitsOfBirthFamily": "No",
+					"SSN": "342-34-4312",
+					"alienNumber": "7979-432",
+					"currNonImmVisaCategory": "NO",
+					"passportNumber": "321321-3432",
+					"passportExpiryDate": "2030-08-21",
+					"nationality": {
+						"id": 3,
+						"name": "Canadian"
+					},
+					"maritalStatus": {
+						"id": 2,
+						"name": "Married"
+					},
+					"dateOfMarriage": "2017-09-02",
+					"placeOfMarriage": {
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						}
+					},
+					"haveMarriageCertificate": "Yes",
+					"have2AffidavitsAttestingToMarriage": "No",
+					"totalIncomeRecentYear": 20022,
+					"assetAmount": 20000,
+					"assets": [{
+							"aType": {
+								"id": 1,
+								"name": "Checking Account"
+							},
+							"nameOfHolder": "Beneficiary 1",
+							"amount": 12121
+						},
+						{
+							"aType": {
+								"id": 2,
+								"name": "Saving Account"
+							},
+							"nameOfHolder": "Beneficiary 1",
+							"amount": 324
+						},
+						{
+							"aType": {
+								"id": 3,
+								"name": "Annuities"
+							},
+							"nameOfHolder": "Beneficiary 1",
+							"amount": 4324
+						},
+						{
+							"aType": {
+								"id": 4,
+								"name": "Retirement Account"
+							},
+							"nameOfHolder": "Beneficiary 1",
+							"amount": 5544
+						}
+					],
+					"liabilitiesDebts": [{
+							"lType": {
+								"id": 1,
+								"name": "Mortgage"
+							},
+							"amount": 43243
+						},
+						{
+							"lType": {
+								"id": 2,
+								"name": "Car Loans"
+							},
+							"amount": 6553
+						},
+						{
+							"lType": {
+								"id": 3,
+								"name": "Credit Card Debt"
+							},
+							"amount": 432
+						},
+						{
+							"lType": {
+								"id": 4,
+								"name": "Education Related Loans"
+							},
+							"amount": 322
+						},
+						{
+							"lType": {
+								"id": 5,
+								"name": "Tax Debts"
+							},
+							"amount": 221
+						}
+					],
+					"education": [{
+							"schoolName": "Sidhardha",
+							"degree": "SSC",
+							"fieldOfStudy": "SSC",
+							"fromDate": "2005-01-01",
+							"toDate": "2006-01-31"
+						},
+						{
+							"schoolName": "Rathnam",
+							"degree": "MPC",
+							"fieldOfStudy": "Mathamatics",
+							"fromDate": "2006-02-01",
+							"toDate": "2008-01-31"
+						}
+					],
+					"currentStatus": "H1B",
+					"statusExpiryDate": "2030-09-23",
+					"haveCreditReport": "Yes",
+					"creditScore": 767,
+					"publicBenefits": [1, 2, 5],
+					"healthInsurance": {
+						"premium": 34343,
+						"renewalDate": "2020-08-21"
+					},
+					"height": {
+						"feet": 5,
+						"inches": 8
+					},
+					"weight": 80,
+					"race": {
+						"id": 1,
+						"name": "White"
+					},
+					"eyeColor": {
+						"id": 1,
+						"name": "Black"
+					},
+					"hairColor": {
+						"id": 2,
+						"name": "Brow2"
+					},
+					"allCountryIssuedPassports": {
+						"country": {
+							"id": 101,
+							"name": "India"
+						},
+						"number": "JGJHGJ3232",
+						"issuedDate": "2015-02-12",
+						"expiryDate": "2030-09-23"
+					},
+					"residedFromDateinUs": "2010-09-21",
+					"enterByVisaWaiverProgram": "NO",
+					"nonImmVisaNumber": "HKHK932",
+					"visaIssuedDate": "2010-09-21",
+					"visaIssuedAt": "Hyderabad",
+					"visaExpiryDate": "2011-09-21",
+					"formI94CardNumber": "UUGG88",
+					"lastEntryPlaceInUs": {
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						}
+					},
+					"mostRecentEntryDateInUs": "2020-01-09",
+					"initialEntryDateInUs": "2015-09-23",
+					"mannerOfMostEntryInUs": "Business",
+					"areYouInpectedByImmOfficer": "Yes",
+					"inspPlaceByImmOfficer": {
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						}
+					},
+					"formI94ExpiryDate": "2023-09-13",
+					"everIssuedEADFromUscis": "No",
+					"i140PrioityDate": "2019-09-02",
+					"classificationCategory": {
+						"id": 1,
+						"name": "EB-1"
+					},
+					"holdPermResidenceInOtherCountry": "No",
+					"permResidenceInOtherCountry": {
+						"id": 101,
+						"name": "India"
+					},
+					"everApplyPermResidentStatus": "No",
+					"father": {
+						"firstName": "c",
+						"middleName": "Father",
+						"lastName": "1",
+						"birthFirstName": "Beneficiary",
+						"birthMiddleName": "Father",
+						"birthLastName": "11",
+						"dateOfBirth": "1967-09-23",
+						"placeOfBirth": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"currentResidence": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"deceasedDate": "2018-09-23",
+						"deceasedPlace": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							}
+						},
+						"everUSCitizen": "No",
+						"usCitizenSince": ""
+					},
+					"mother": {
+						"firstName": "Mother",
+						"middleName": "Beneficiary",
+						"lastName": "1",
+						"birthFirstName": "Mother",
+						"birthMiddleName": "Beneficiary",
+						"birthLastName": "11",
+						"dateOfBirth": "1975-09-23",
+						"placeOfBirth": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"currentResidence": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"deceasedDate": "2018-09-23",
+						"deceasedPlace": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							}
+						},
+						"everUSCitizen": "No",
+						"usCitizenSince": ""
+					},
+					"previouslyMarried": "Yes",
+					"prevSpouse": {
+						"firstName": "Prev",
+						"middleName": "Spouse",
+						"lastName": "1",
+						"dateOfBirth": "1990-01-19",
+						"dateOfMarriage": "2013-01-19",
+						"placeOfMarriage": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"dateOfMarriageEnded": "2013-09-19",
+						"placeOfTermination": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"marriageEndedDueTo": {
+							"id": 1,
+							"name": "Divorse"
+						},
+						"obtainPermResidenceThroughSpouse": "No"
+					},
+					"residenceAddressUSAbroad": [{
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244",
+							"fromDate": "2012-09-23",
+							"toDate": "2013-08-03"
+						},
+						{
+							"line1": "1-321",
+							"line2": "james Street 1",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "43332",
+							"fromDate": "2013-08-25",
+							"toDate": "2015-08-03"
+						}
+					],
+					"lastAddressOutsideUS": {
+						"line1": "1-32",
+						"line2": "james Street",
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						},
+						"zipcode": "24244",
+						"fromDate": "2012-09-23",
+						"toDate": "2013-08-03"
+					},
+					"partOfAnyGroup": "Yes",
+					"associationsGroups": [{
+							"name": "Sample Group 1",
+							"place": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"fromDate": "2012-09-23",
+							"toDate": "2013-09-23",
+							"nature": "Community"
+						},
+						{
+							"name": "Sample Group 2",
+							"place": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"fromDate": "2012-09-23",
+							"toDate": "2013-09-23",
+							"nature": "Community 2"
+						}
+					],
+					"employmentHistoryUSAbroad": [{
+							"employerName": "TCS",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"occupation": "Developer",
+							"fromDate": "2012-08-24",
+							"toDate": "2016-08-23"
+						},
+						{
+							"employerName": "Wipro",
+							"address": {
+								"line1": "1-32w",
+								"line2": "james Street w",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"occupation": "Developer",
+							"fromDate": "2010-08-21",
+							"toDate": "2012-08-23"
+						}
+					],
+					"lastEmployerOutsideUS": {
+						"employerName": "TCS",
+						"address": {
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244"
+						},
+						"occupation": "Developer",
+						"fromDate": "2010-08-21",
+						"toDate": "2012-08-23"
+					},
+					"currentJobTitle": "Developer",
+					"employerName": "TCS",
+					"employerAddress": {
+						"line1": "1-32",
+						"line2": "james Street",
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						},
+						"zipcode": "24244"
+					},
+					"currentAnnualSalary": 23309,
+					"depositsInUSBank": 2832,
+					"reasonableValueProperty": 3232,
+					"marketValueOfStocksBonds": 2423,
+					"sumOfLifeInsurance": 4322,
+					"cashSurrenderValueOfLifeInsurance": 43,
+					"valueOfRealEstate": 0,
+					"amountOfMortgageOnProperty": 3243,
+					"realPropertyAddress": {
+						"line1": "1-32",
+						"line2": "james Street",
+						"location": {
+							"id": 10093,
+							"name": "Airdrie"
+						},
+						"state": {
+							"id": 663,
+							"name": "Alberta"
+						},
+						"country": {
+							"id": 38,
+							"name": "Canada"
+						},
+						"zipcode": "24244"
+					},
+					"submittedAffidavitForOther": "No",
+					"submittedAffidavitPerson": "",
+					"submittedAffidavitSubmitDate": "",
+					"childrenCount": 2,
+					"applicationRequired": false
+				},
+				"documents": {
+					"formI797": [{
+						"name": "Sample Resume.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"uploadedOn": "2019-12-20T18:43:15.421Z",
+						"status": false
+					}],
+					"birthCertificate": [{
+						"name": "Sample Resume.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"uploadedOn": "2019-12-20T18:43:15.421Z",
+						"status": false
+					}],
+					"passport": [{
+						"name": "Sample Birth Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/0/e/2/0e29c1a0234311ea982cef63ec1cae37.pdf",
+						"mimetype": "application/pdf",
+						"uploadedOn": "2019-12-20T18:43:15.421Z",
+						"status": false
+					}],
+					"visa": [{
+						"name": "Sample Form I 94.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/2/3/123e5f80234311ea91e7c32677cefd23.pdf",
+						"mimetype": "application/pdf",
+						"uploadedOn": "2019-12-20T18:43:15.421Z",
+						"status": false
+					}],
+					"formI94": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"I140ApprovalNotice": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"underlyingLaborCertification": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"photo": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"medicalExaminations": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"formI134": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"itReturns": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"w2": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"bankStatement": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"continuedValidStatus": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"evidenceOfFilingPetition": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"otherIncomeAssetProof": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"medicalInsuranceProof": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"creditReport": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"creditReportDocs": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"permResidentStatusDocs": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"empAuthFrontbackDocs": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}],
+					"other": [{
+						"name": "New Other Certificate.pdf",
+						"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+						"mimetype": "application/pdf",
+						"status": true
+					}]
+				},
+				"dependentsInfo": {
+					"spouse": {
+						"firstName": "Beneficiary",
+						"middleName": "Spouse",
+						"lastName": "11",
+						"maidenName": "",
+						"allOtherNamesUsed": [{
+							"firstName": "Beneficiary",
+							"middleName": "",
+							"lastName": "11"
+						}],
+						"email": "dadsa@dadas.com",
+						"address": {
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244"
+						},
+						"mailingAddressIsSameAsAddress": false,
+						"mailingAddress": {
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244"
+						},
+						"phoneNumber": "4324343222",
+						"phoneCountryCode":  { 
+							"countryCode":"IN",
+							"countryCallingCode":"+91"
+						},
+						"dayTimePhoneNumber": "4324343222",
+						"dayTimePhoneCountryCode":  { 
+							"countryCode":"IN",
+							"countryCallingCode":"+91"
+						},
+						"gender": "Female",
+						"SSN": "4234-4324-22",
+						"alienNumber": "797987-432",
+						"dateOfBirth": "1990-09-02",
+						"placeOfBirth": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"nameDiffFromBirthCert": "No",
+						"birthCertHaveNamePobDob": "No",
+						"have2AffidavitsOfBirthFamily": "No",
+						"currNonImmVisaCategory": "HN",
+						"passportNumber": "321321-3432",
+						"passportExpiryDate": "2030-08-21",
+						"haveCreditReport": "Yes",
+						"haveCreditScore": "Yes",
+						"creditScore": 767,
+						"publicBenefits": [1, 2, 5],
+						"nationality": {
+							"id": 3,
+							"name": "Canandian"
+						},
+						"maritalStatus": {
+							"id": 2,
+							"name": "Married"
+						},
+						"dateOfMarriage": "2017-09-02",
+						"placeOfMarriage": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							}
+						},
+						"haveMarriageCertificate": "Yes",
+						"have2AffidavitsAttestingToMarriage": "No",
+						"totalIncomeRecentYear": 20022,
+						"assetAmount": 20000,
+						"assets": [{
+								"aType": {
+									"id": 1,
+									"name": "Checking Account"
+								},
+								"nameOfHolder": "Spouse 1",
+								"amount": 12121
+							},
+							{
+								"aType": {
+									"id": 2,
+									"name": "Saving Account"
+								},
+								"nameOfHolder": "Spouse 1",
+								"amount": 324
+							},
+							{
+								"aType": {
+									"id": 3,
+									"name": "Annuities"
+								},
+								"nameOfHolder": "Spouse 1",
+								"amount": 4324
+							},
+							{
+								"aType": {
+									"id": 4,
+									"name": "Retirement Account"
+								},
+								"nameOfHolder": "Spouse 1",
+								"amount": 5544
+							}
+						],
+						"liabilitiesDebts": [{
+								"lType": {
+									"id": 1,
+									"name": "Mortgage"
+								},
+								"amount": 43243
+							},
+							{
+								"lType": {
+									"id": 2,
+									"name": "Car Loans"
+								},
+								"amount": 6553
+							},
+							{
+								"lType": {
+									"id": 3,
+									"name": "Credit Card Debt"
+								},
+								"amount": 432
+							},
+							{
+								"lType": {
+									"id": 4,
+									"name": "Education Related Loans"
+								},
+								"amount": 322
+							},
+							{
+								"lType": {
+									"id": 5,
+									"name": "Tax Debts"
+								},
+								"amount": 221
+							}
+						],
+						"education": [{
+								"schoolName": "Sidhardha",
+								"degree": "SSC",
+								"fieldOfStudy": "SSC",
+								"fromDate": "2005-01-01",
+								"toDate": "2006-01-31"
+							},
+							{
+								"schoolName": "Rathnam",
+								"degree": "MPC",
+								"fieldOfStudy": "Mathamatics",
+								"fromDate": "2006-02-01",
+								"toDate": "2008-01-31"
+							}
+						],
+						"currentStatus": "H1B",
+						"statusExpiryDate": "2024-09-21",
+						"applyingWithYou": "No",
+						"height": {
+							"feet": 5,
+							"inches": 8
+						},
+						"weight": 80,
+						"race": {
+							"id": 1,
+							"name": "White"
+						},
+						"eyeColor": {
+							"id": 1,
+							"name": "Black"
+						},
+						"hairColor": {
+							"id": 2,
+							"name": "Brow2"
+						},
+						"allCountryIssuedPassports": {
+							"country": {
+								"id": 101,
+								"name": "India"
+							},
+							"number": "JGJHGJ3232",
+							"issuedDate": "2015-02-12",
+							"expiryDate": "2030-09-23"
+						},
+						"residedFromDateinUs": "2010-09-21",
+						"enterByVisaWaiverProgram": "NO",
+						"nonImmVisaNumber": "HKHK932",
+						"visaIssuedDate": "2010-09-21",
+						"visaIssuedAt": "Hyderabad",
+						"visaExpiryDate": "2011-09-21",
+						"formI94CardNumber": "UUGG88",
+						"lastEntryPlaceInUs": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							}
+						},
+						"mostRecentEntryDateInUs": "2020-01-09",
+						"initialEntryDateInUs": "2015-09-23",
+						"mannerOfMostEntryInUs": "Business",
+						"areYouInpectedByImmOfficer": "Yes",
+						"inspPlaceByImmOfficer": {
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							}
+						},
+						"formI94ExpiryDate": "2023-09-13",
+						"everIssuedEADFromUscis": "No",
+						"i140PrioityDate": "2019-09-02",
+						"classificationCategory": {
+							"id": 1,
+							"name": "EB-1"
+						},
+						"holdPermResidenceInOtherCountry": "No",
+						"permResidenceInOtherCountry": {
+							"id": 101,
+							"name": "India"
+						},
+						"everApplyPermResidentStatus": "No",
+						"father": {
+							"firstName": "Father",
+							"middleName": "Spouse",
+							"lastName": "1",
+							"birthFirstName": "Father",
+							"birthMiddleName": "Spouse",
+							"birthLastName": "11",
+							"dateOfBirth": "1967-09-23",
+							"placeOfBirth": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"currentResidence": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"deceasedDate": "2018-09-23",
+							"deceasedPlace": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								}
+							},
+							"everUSCitizen": "No",
+							"usCitizenSince": ""
+						},
+						"mother": {
+							"firstName": "Mother",
+							"middleName": "Spouse",
+							"lastName": "1",
+							"birthFirstName": "Mother",
+							"birthMiddleName": "Spouse",
+							"birthLastName": "11",
+							"dateOfBirth": "1975-09-23",
+							"placeOfBirth": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"currentResidence": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"deceasedDate": "2018-09-23",
+							"deceasedPlace": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								}
+							},
+							"everUSCitizen": "No",
+							"usCitizenSince": ""
+						},
+						"spouse": {
+							"firstName": "Spouse",
+							"middleName": "Spouse",
+							"lastName": "1",
+							"birthFirstName": "ada",
+							"birthMiddleName": "",
+							"birthLastName": "das",
+							"dateOfBirth": "2076-09-21",
+							"placeOfBirth": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"alienNumber": "797-43",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"currentStatus": "H1B",
+							"expiryDate": "2030-09-21",
+							"applyingWithYou": "No"
+						},
+						"childrens": [{
+							"firstName": "Spouse",
+							"middleName": "Children",
+							"lastName": "1",
+							"birthFirstName": "Spouse",
+							"birthMiddleName": "Children",
+							"birthLastName": "11",
+							"dateOfBirth": "2076-09-21",
+							"placeOfBirth": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"relationship": "Son",
+							"alienNumber": "79-432",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"currentStatus": "H1B",
+							"expiryDate": "2029-09-23",
+							"applyingWithYou": "No"
+						}],
+						"previouslyMarried": "Yes",
+						"prevSpouse": {
+							"firstName": "Spouse Prev",
+							"middleName": "Spouse",
+							"lastName": "1",
+							"dateOfBirth": "1990-01-19",
+							"dateOfMarriage": "2013-01-19",
+							"placeOfMarriage": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"dateOfMarriageEnded": "2013-09-19",
+							"placeOfTermination": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"marriageEndedDueTo": {
+								"id": 1,
+								"name": "Divorse"
+							},
+							"obtainPermResidenceThroughSpouse": "No"
+						},
+						"residenceAddressUSAbroad": [{
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244",
+							"fromDate": "2012-09-23",
+							"toDate": "2013-08-03"
+						}],
+						"lastAddressOutsideUS": {
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244",
+							"fromDate": "2012-09-23",
+							"toDate": "2013-08-03"
+						},
+						"partOfAnyGroup": "Yes",
+						"associationsGroups": [{
+							"name": "Sample Group",
+							"place": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"fromDate": "2012-09-23",
+							"toDate": "2013-09-23",
+							"nature": "Community"
+						}],
+						"employmentHistoryUSAbroad": [{
+							"employerName": "TCS",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"occupation": "Developer",
+							"fromDate": "2010-08-21",
+							"toDate": "2012-08-23"
+						}],
+						"lastEmployerOutsideUS": {
+							"employerName": "TCS",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"occupation": "Developer",
+							"fromDate": "2010-08-21",
+							"toDate": "2012-08-23"
+						},
+						"currentJobTitle": "Developer",
+						"employerName": "TCS",
+						"employerAddress": {
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244"
+						},
+						"currentAnnualSalary": 23309,
+						"depositsInUSBank": 2832,
+						"reasonableValueProperty": 3232,
+						"marketValueOfStocksBonds": 2423,
+						"sumOfLifeInsurance": 4322,
+						"cashSurrenderValueOfLifeInsurance": 43,
+						"valueOfRealEstate": 0,
+						"amountOfMortgageOnProperty": 3243,
+						"realPropertyAddress": {
+							"line1": "1-32",
+							"line2": "james Street",
+							"location": {
+								"id": 10093,
+								"name": "Airdrie"
+							},
+							"state": {
+								"id": 663,
+								"name": "Alberta"
+							},
+							"country": {
+								"id": 38,
+								"name": "Canada"
+							},
+							"zipcode": "24244"
+						},
+						"submittedAffidavitForOther": "No",
+						"submittedAffidavitPerson": "",
+						"submittedAffidavitSubmitDate": "",
+						"applicationRequired": true,
+						"documents": {
+
+							"formI797": [{
+								"name": "Sample Resume.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"uploadedOn": "2019-12-20T18:43:15.421Z",
+								"status": false
+							}],
+							"birthCertificate": [{
+								"name": "Sample Resume.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"uploadedOn": "2019-12-20T18:43:15.421Z",
+								"status": false
+							}],
+							"passport": [{
+								"name": "Sample Birth Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/0/e/2/0e29c1a0234311ea982cef63ec1cae37.pdf",
+								"mimetype": "application/pdf",
+								"uploadedOn": "2019-12-20T18:43:15.421Z",
+								"status": false
+							}],
+							"visa": [{
+								"name": "Sample Form I 94.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/2/3/123e5f80234311ea91e7c32677cefd23.pdf",
+								"mimetype": "application/pdf",
+								"uploadedOn": "2019-12-20T18:43:15.421Z",
+								"status": false
+							}],
+							"formI94": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"I140ApprovalNotice": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"underlyingLaborCertification": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"photo": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"medicalExaminations": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"formI134": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"itReturns": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"w2": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"bankStatement": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"continuedValidStatus": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"evidenceOfFilingPetition": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"otherIncomeAssetProof": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"medicalInsuranceProof": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"creditReport": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"creditReportDocs": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"permResidentStatusDocs": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"empAuthFrontbackDocs": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}],
+							"other": [{
+								"name": "New Other Certificate.pdf",
+								"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+								"mimetype": "application/pdf",
+								"status": true
+							}]
+						}
+					},
+					"childrens": [{
+							"firstName": "Beneficiary",
+							"middleName": "Child",
+							"lastName": "1",
+							"maidenName": "",
+							"allOtherNamesUsed": [{
+								"firstName": "Beneficiary",
+								"middleName": "Child",
+								"lastName": "11"
+							},
+							{
+								"firstName": "Beneficiary",
+								"middleName": "Child",
+								"lastName": "22"
+							}],
+							"email": "dadsa@dadas.com",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+
+							"mailingAddressIsSameAsAddress": false,
+							"mailingAddress": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"phoneNumber": "4324343222",
+							"phoneCountryCode":  { 
+								"countryCode":"IN",
+								"countryCallingCode":"+91"
+							},
+							"dayTimePhoneNumber": "4324343222",
+							"dayTimePhoneCountryCode":  { 
+								"countryCode":"IN",
+								"countryCallingCode":"+91"
+							},
+							"gender": "Female",
+							"SSN": "4234-4324-22",
+							"alienNumber": "797987-432",
+							"dateOfBirth": "1990-09-02",
+							"placeOfBirth": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"nameDiffFromBirthCert": "No",
+							"birthCertHaveNamePobDob": "No",
+							"have2AffidavitsOfBirthFamily": "No",
+							"currNonImmVisaCategory": "HN",
+							"passportNumber": "321321-3432",
+							"passportExpiryDate": "2030-08-21",
+							"haveCreditReport": "Yes",
+							"haveCreditScore": "Yes",
+							"creditScore": 767,
+							"publicBenefits": [1, 2, 5],
+							"nationality": {
+								"id": 3,
+								"name": "Canandian"
+							},
+							"maritalStatus": {
+								"id": 2,
+								"name": "Married"
+							},
+							"dateOfMarriage": "2017-09-02",
+							"placeOfMarriage": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"haveMarriageCertificate": "Yes",
+							"have2AffidavitsAttestingToMarriage": "No",
+							"totalIncomeRecentYear": 20022,
+							"assetAmount": 20000,
+							"assets": [{
+									"aType": {
+										"id": 1,
+										"name": "Checking Account"
+									},
+									"nameOfHolder": "Child 1",
+									"amount": 12121
+								},
+								{
+									"aType": {
+										"id": 2,
+										"name": "Saving Account"
+									},
+									"nameOfHolder": "Child 1",
+									"amount": 324
+								},
+								{
+									"aType": {
+										"id": 3,
+										"name": "Annuities"
+									},
+									"nameOfHolder": "Child 1",
+									"amount": 4324
+								},
+								{
+									"aType": {
+										"id": 4,
+										"name": "Retirement Account"
+									},
+									"nameOfHolder": "Child 1",
+									"amount": 5544
+								}
+							],
+							"liabilitiesDebts": [{
+									"lType": {
+										"id": 1,
+										"name": "Mortgage"
+									},
+									"amount": 43243
+								},
+								{
+									"lType": {
+										"id": 2,
+										"name": "Car Loans"
+									},
+									"amount": 6553
+								},
+								{
+									"lType": {
+										"id": 3,
+										"name": "Credit Card Debt"
+									},
+									"amount": 432
+								},
+								{
+									"lType": {
+										"id": 4,
+										"name": "Education Related Loans"
+									},
+									"amount": 322
+								},
+								{
+									"lType": {
+										"id": 5,
+										"name": "Tax Debts"
+									},
+									"amount": 221
+								}
+							],
+							"education": [{
+									"schoolName": "Sidhardha",
+									"degree": "SSC",
+									"fieldOfStudy": "SSC",
+									"fromDate": "2005-01-01",
+									"toDate": "2006-01-31"
+								},
+								{
+									"schoolName": "Rathnam",
+									"degree": "MPC",
+									"fieldOfStudy": "Mathamatics",
+									"fromDate": "2006-02-01",
+									"toDate": "2008-01-31"
+								}
+							],
+							"currentStatus": "H1B",
+							"statusExpiryDate": "2024-09-21",
+							"applyingWithYou": "No",
+							"height": {
+								"feet": 5,
+								"inches": 8
+							},
+							"weight": 80,
+							"race": {
+								"id": 1,
+								"name": "White"
+							},
+							"eyeColor": {
+								"id": 1,
+								"name": "Black"
+							},
+							"hairColor": {
+								"id": 2,
+								"name": "Brow2"
+							},
+							"allCountryIssuedPassports": {
+								"country": {
+									"id": 101,
+									"name": "India"
+								},
+								"number": "JGJHGJ3232",
+								"issuedDate": "2015-02-12",
+								"expiryDate": "2030-09-23"
+							},
+							"residedFromDateinUs": "2010-09-21",
+							"enterByVisaWaiverProgram": "NO",
+							"nonImmVisaNumber": "HKHK932",
+							"visaIssuedDate": "2010-09-21",
+							"visaIssuedAt": "Hyderabad",
+							"visaExpiryDate": "2011-09-21",
+							"formI94CardNumber": "UUGG88",
+							"lastEntryPlaceInUs": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								}
+							},
+							"mostRecentEntryDateInUs": "2020-01-09",
+							"initialEntryDateInUs": "2015-09-23",
+							"mannerOfMostEntryInUs": "Business",
+							"areYouInpectedByImmOfficer": "Yes",
+							"inspPlaceByImmOfficer": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								}
+							},
+							"formI94ExpiryDate": "2023-09-13",
+							"everIssuedEADFromUscis": "No",
+							"i140PrioityDate": "2019-09-02",
+							"classificationCategory": {
+								"id": 1,
+								"name": "EB-1"
+							},
+							"holdPermResidenceInOtherCountry": "No",
+							"permResidenceInOtherCountry": {
+								"id": 101,
+								"name": "India"
+							},
+							"everApplyPermResidentStatus": "NO",
+							"father": {
+								"firstName": "Father",
+								"middleName": "Child",
+								"lastName": "1",
+								"birthFirstName": "Father",
+								"birthMiddleName": "Child",
+								"birthLastName": "11",
+								"dateOfBirth": "1967-09-23",
+								"placeOfBirth": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"currentResidence": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"deceasedDate": "2018-09-23",
+								"deceasedPlace": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									}
+								},
+								"everUSCitizen": "No",
+								"usCitizenSince": ""
+							},
+							"mother": {
+								"firstName": "Mother",
+								"middleName": "Child",
+								"lastName": "1",
+								"birthFirstName": "Mother",
+								"birthMiddleName": "Child",
+								"birthLastName": "11",
+								"dateOfBirth": "1975-09-23",
+								"placeOfBirth": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"currentResidence": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"deceasedDate": "2018-09-23",
+								"deceasedPlace": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									}
+								},
+								"everUSCitizen": "No",
+								"usCitizenSince": ""
+							},
+							"residenceAddressUSAbroad": [{
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244",
+								"fromDate": "2012-09-23",
+								"toDate": "2013-08-03"
+							}],
+							"lastAddressOutsideUS": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244",
+								"fromDate": "2012-09-23",
+								"toDate": "2013-08-03"
+							},
+							"applicationRequired": true,
+							"documents": {
+								"formI797": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"birthCertificate": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"passport": [{
+									"name": "Sample Birth Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/0/e/2/0e29c1a0234311ea982cef63ec1cae37.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"visa": [{
+									"name": "Sample Form I 94.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/2/3/123e5f80234311ea91e7c32677cefd23.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"formI94": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"I140ApprovalNotice": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"underlyingLaborCertification": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"photo": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"medicalExaminations": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"formI134": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"itReturns": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"w2": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"bankStatement": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"continuedValidStatus": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"evidenceOfFilingPetition": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"otherIncomeAssetProof": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"medicalInsuranceProof": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"creditReport": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"creditReportDocs": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"permResidentStatusDocs": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"empAuthFrontbackDocs": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}],
+								"other": [{
+									"name": "New Other Certificate.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/1/9/4/194c1920234311eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"status": true
+								}]
+							}
+						},
+						{
+							"firstName": "Beneficiary",
+							"middleName": "Child",
+							"lastName": "2",
+							"maidenName": "",
+							"allOtherNamesUsed": [{
+								"firstName": "Beneficiary",
+								"middleName": "Child",
+								"lastName": "21"
+							}],
+							"email": "eewqewqe@dadas.com",
+							"address": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"mailingAddress": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244"
+							},
+							"phoneNumber": "4324343222",
+							"phoneCountryCode":  { 
+								"countryCode":"IN",
+								"countryCallingCode":"+91"
+							},
+							"dayTimePhoneNumber": "4324343222",
+							"dayTimePhoneCountryCode":  { 
+								"countryCode":"IN",
+								"countryCallingCode":"+91"
+							},
+							"gender": "Female",
+							"SSN": "4234-4324-22",
+							"alienNumber": "797987-432",
+							"dateOfBirth": "1990-09-02",
+							"placeOfBirth": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"nameDiffFromBirthCert": "No",
+							"birthCertHaveNamePobDob": "No",
+							"have2AffidavitsOfBirthFamily": "No",
+							"currNonImmVisaCategory": "HN",
+							"passportNumber": "321321-3432",
+							"passportExpiryDate": "2030-08-21",
+							"haveCreditReport": "Yes",
+							"haveCreditScore": "Yes",
+							"creditScore": 767,
+							"publicBenefits": [1, 2, 5],
+							"nationality": {
+								"id": 3,
+								"name": "Canandian"
+							},
+							"maritalStatus": {
+								"id": 2,
+								"name": "Married"
+							},
+							"dateOfMarriage": "2017-09-02",
+							"placeOfMarriage": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								}
+							},
+							"haveMarriageCertificate": "Yes",
+							"have2AffidavitsAttestingToMarriage": "No",
+							"totalIncomeRecentYear": 20022,
+							"assetAmount": 20000,
+							"assets": [{
+									"aType": {
+										"id": 1,
+										"name": "Checking Account"
+									},
+									"nameOfHolder": "Child 2",
+									"amount": 12121
+								},
+								{
+									"aType": {
+										"id": 2,
+										"name": "Saving Account"
+									},
+									"nameOfHolder": "Child 2",
+									"amount": 324
+								},
+								{
+									"aType": {
+										"id": 3,
+										"name": "Annuities"
+									},
+									"nameOfHolder": "Child 2",
+									"amount": 4324
+								},
+								{
+									"aType": {
+										"id": 4,
+										"name": "Retirement Account"
+									},
+									"nameOfHolder": "Child 2",
+									"amount": 5544
+								}
+							],
+							"liabilitiesDebts": [{
+									"lType": {
+										"id": 1,
+										"name": "Mortgage"
+									},
+									"amount": 43243
+								},
+								{
+									"lType": {
+										"id": 2,
+										"name": "Car Loans"
+									},
+									"amount": 6553
+								},
+								{
+									"lType": {
+										"id": 3,
+										"name": "Credit Card Debt"
+									},
+									"amount": 432
+								},
+								{
+									"lType": {
+										"id": 4,
+										"name": "Education Related Loans"
+									},
+									"amount": 322
+								},
+								{
+									"lType": {
+										"id": 5,
+										"name": "Tax Debts"
+									},
+									"amount": 221
+								}
+							],
+							"education": [{
+									"schoolName": "Sidhardha",
+									"degree": "SSC",
+									"fieldOfStudy": "SSC",
+									"fromDate": "2005-01-01",
+									"toDate": "2006-01-31"
+								},
+								{
+									"schoolName": "Rathnam",
+									"degree": "MPC",
+									"fieldOfStudy": "Mathamatics",
+									"fromDate": "2006-02-01",
+									"toDate": "2008-01-31"
+								}
+							],
+							"currentStatus": "H1B",
+							"statusExpiryDate": "2024-09-21",
+							"applyingWithYou": "No",
+							"height": {
+								"feet": 5,
+								"inches": 8
+							},
+							"weight": 80,
+							"race": {
+								"id": 1,
+								"name": "White"
+							},
+							"eyeColor": {
+								"id": 1,
+								"name": "Black"
+							},
+							"hairColor": {
+								"id": 2,
+								"name": "Brow2"
+							},
+							"allCountryIssuedPassports": {
+								"country": {
+									"id": 101,
+									"name": "India"
+								},
+								"number": "JGJHGJ3232",
+								"issuedDate": "2015-02-12",
+								"expiryDate": "2030-09-23"
+							},
+							"residedFromDateinUs": "2010-09-21",
+							"enterByVisaWaiverProgram": "NO",
+							"nonImmVisaNumber": "HKHK932",
+							"visaIssuedDate": "2010-09-21",
+							"visaIssuedAt": "Hyderabad",
+							"visaExpiryDate": "2011-09-21",
+							"formI94CardNumber": "UUGG88",
+							"lastEntryPlaceInUs": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								}
+							},
+							"mostRecentEntryDateInUs": "2020-01-09",
+							"initialEntryDateInUs": "2015-09-23",
+							"mannerOfMostEntryInUs": "Business",
+							"inspPlaceByImmOfficer": {
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								}
+							},
+							"formI94ExpiryDate": "2023-09-13",
+							"everIssuedEADFromUscis": "No",
+							"i140PrioityDate": "2019-09-02",
+							"classificationCategory": {
+								"id": 1,
+								"name": "EB-1"
+							},
+							"holdPermResidenceInOtherCountry": "No",
+							"permResidenceInOtherCountry": {
+								"id": 101,
+								"name": "India"
+							},
+							"everApplyPermResidentStatus": "No",
+							"father": {
+								"firstName": "Father",
+								"middleName": "Child",
+								"lastName": "1",
+								"birthFirstName": "Father",
+								"birthMiddleName": "Child",
+								"birthLastName": "11",
+								"dateOfBirth": "1967-09-23",
+								"placeOfBirth": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"currentResidence": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"deceasedDate": "2018-09-23",
+								"deceasedPlace": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									}
+								},
+								"everUSCitizen": "No",
+								"usCitizenSince": ""
+							},
+							"mother": {
+								"firstName": "Mother",
+								"middleName": "Child",
+								"lastName": "1",
+								"birthFirstName": "Mother",
+								"birthMiddleName": "Child",
+								"birthLastName": "11",
+								"dateOfBirth": "1975-09-23",
+								"placeOfBirth": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"currentResidence": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									},
+									"state": {
+										"id": 663,
+										"name": "Alberta"
+									},
+									"country": {
+										"id": 38,
+										"name": "Canada"
+									}
+								},
+								"deceasedDate": "2018-09-23",
+								"deceasedPlace": {
+									"location": {
+										"id": 10093,
+										"name": "Airdrie"
+									}
+								},
+								"everUSCitizen": "No",
+								"usCitizenSince": ""
+							},
+							"residenceAddressUSAbroad": [{
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244",
+								"fromDate": "2012-09-23",
+								"toDate": "2013-08-03"
+							}],
+							"lastAddressOutsideUS": {
+								"line1": "1-32",
+								"line2": "james Street",
+								"location": {
+									"id": 10093,
+									"name": "Airdrie"
+								},
+								"state": {
+									"id": 663,
+									"name": "Alberta"
+								},
+								"country": {
+									"id": 38,
+									"name": "Canada"
+								},
+								"zipcode": "24244",
+								"fromDate": "2012-09-23",
+								"toDate": "2013-08-03"
+							},
+							"applicationRequired": true,
+							"documents": {
+								"passport": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"visa": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"formI94": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"birthCertificate": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"approvalNotice": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"photo": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"empAuthFrontbackDocs": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"permResidentStatusDocs": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}],
+								"other": [{
+									"name": "Sample Resume.pdf",
+									"url": "https://intakeportal.s3.amazonaws.com/intake/private/f/c/d/fcdbd320234211eaa728f59d53d25b72.pdf",
+									"mimetype": "application/pdf",
+									"uploadedOn": "2019-12-20T18:43:15.421Z",
+									"status": false
+								}]
+							}
+						}
+					]
+				}
+			}
+
+	-- Get petition details
+		Url: http://localhost:8989/gc-petition/details,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5ddbaf19154bb76dd47892dd"
+		}
+	
+	-- Get petition activity list
+		Url: http://localhost:8989/gc-petition/activity-list,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5ddd26e2e0103e655c0e4a77",
+			"page": 1,
+			"perpage": 25
+		}
+
+	-- Manage Edit option
+		Url: http://localhost:8989/gc-petition/manage-edit-option,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204",
+			"comment": "Enabling edit option....",
+			"action": "ENABLE_EDIT_OPTION", // 'DISABLE_EDIT_OPTION'
+			"today": "2020-10-08"
+		}
+
+	-- Assign a role
+		Url: http://localhost:8989/gc-petition/assign-a-role,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f798cbb0b59a867005e3c56",
+			"userId": "5de4a68f3f265070080ad945",
+			"userName": "Attorney N",
+			"roleId": 4,
+			"comment": "Test Comment 1111",
+			"action": "ASSIGN_ATTORNEY", // "ASSIGN_PARALEGAL"
+			"submitted": true
+		}
+	
+	-- Generate PDF form documents
+		Url: http://localhost:8989/gc-petition/generate-pdf-form-document,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f7bf3f5caaf344aa4884693"
+		}
+
+	-- Get PDF form documents list
+		Url: http://localhost:8989/gc-petition/pdf-form-version-list,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f7bf3f5caaf344aa4884693", 
+			"userType": "self",// 'spouse', 'child'
+			"formType": "I-485J",// Optional
+			"childrenId": "5f7bf3f5caaf344aa4884693" // Optional
+		}
+
+	-- Save PDF form document
+		Url: http://localhost:8989/gc-petition/save-pdf-form-version,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f7bf3f5caaf344aa4884693", 
+			"caseNo": "GC-1002202000008",
+			"formType": "I-485J", // '131', '765', '944', 'I-485'
+			"userType": "self", // 'spouse', 'child'
+			"url": "https://intakeportal.s3.amazonaws.com/intake/public/5/4/2/542d7c0008b211eb8d6f41f6db560a8f.png"
+		}
+		
+	-- Confirm filing documents
+		Url: http://localhost:8989/gc-petition/confirm-filing-documents,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204",
+			"filingDocs": {
+				"beneficiary": {
+					"list": [1, 2, 3, 4, 5]
+				},
+				"spouse": {
+					"list": [1, 2, 3, 4, 5]
+				},
+				"childrens": [{
+					"clientId": "5f7efe0e8abc5a37c81bafe3",
+					"list": [1, 2, 3]
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"list": [1, 2, 3]
+				}]
+			}
+		}
+		
+	-- Upload scanned documents
+		Url: http://localhost:8989/gc-petition/upload-scanned-copy,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204",
+			"documents": [
+				{
+					"name": "131 Docs",
+					"typeId": 21, // GC documents
+					"document": "https://intakeportal.s3.amazonaws.com/intake/public/0/c/0/0c0e0b60233411ea9ba3b1aa9f6fe44f.png",
+					"mimetype": "pdf"
+				},
+				{
+					"name": "485J",
+					"typeId": 21, // GC documents
+					"document": "https://intakeportal.s3.amazonaws.com/intake/public/0/c/d/0cd30910233411ea9ba3b1aa9f6fe44f.png",
+					"mimetype": "pdf"
+				}
+			]
+		}
+		
+	-- Delete scanned documents
+		Url: http://localhost:8989/gc-petition/delete-scanned-copy,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+			"Nonce": {{UUID}}
+		},
+		Payload: {
+			"documentId": "5f7f3a19b85e9253b44ea803"
+		}
+
+	-- Manage petition Main status for all roles
+		Url: http://localhost:8989/gc-petition/manage-approval-process,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5dee1beb768de0433cc3ab57",
+			"comment": "Testing Send Questionnaire for Beneficiary 3",
+			"action": "USICS_APPROVED", // "USICS_APPROVED" / "USICS_RECEIVED_RFE" / "USICS_DENIED" 
+			"today": "2019-12-23", // Required on Status changes to "Received RFE"
+		}
+
+		
+	-- Courier Tracking
+		Url: http://localhost:8989/gc-petition/manage-tracking-details,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204",
+			"trackingId": "Asq12m97sdGR329",
+			"trackingUrl": "https://www.fedex.com/apps/fedextrack/?action=track",
+			"action": "UPDATE_TRACKING_NUMBER", // "UPDATE_USICS_RECEIPT_NUMBER"
+			"receiptName": "Sample Receipt 2",
+			"receiptNumber": "B765quD91pOsa7W",
+			"documents": [{
+				"name": "",
+				"url": "https://intakeportal.s3.amazonaws.com/intake/public/1/8/c/18c50010234911eaafc3a90532b7999a.png",
+				"mimetype": "images/png"
+			}],
+		}
+		
+	-- Save USCIS details
+		Url: http://localhost:8989/gc-petition/save-uscis-details	,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5f7ff2f18f0b4858707debaa", 
+			"beneficiary": [
+				{
+					"typeId": 1,
+					"number": "131-SELF-AAA"
+				},
+				{
+					"typeId": 2,
+					"number": "485-SELF-FGG"
+				},
+				{
+					"typeId": 3,
+					"number": "485J-SELF-EWEW"
+				},
+				{
+					"typeId": 4,
+					"number": "765-SELF-WEWE"
+				},
+				{
+					"typeId": 5,
+					"number": "944-SELF-DSD"
+				}
+			],
+			"spouse": [
+				{
+					"typeId": 1,
+					"number": "131-SPOUSE-UIUI"
+				},
+				{
+					"typeId": 2,
+					"number": "485-SPOUSE-HKHKHH"
+				},
+				{
+					"typeId": 3,
+					"number": "485J-SPOUSE-HOUOU"
+				},
+				{
+					"typeId": 4,
+					"number": "765-SPOUSE-RYRTY"
+				},
+				{
+					"typeId": 5,
+					"number": "944-SPOUSE-IIOIOI"
+				}
+			],
+			"childrens": [
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 1,
+					"number": "131-CHILD-KHKHKH"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 2,
+					"number": "485-CHILD-HKHKHH"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 3,
+					"number": "485J-CHILD-HOUOU"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 4,
+					"number": "765-CHILD-RYRTY"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 5,
+					"number": "944-CHILD-IIOIOI"
+				}
+			]
+		}
+
+	-- Update USCIS details
+		Url: http://localhost:8989/gc-petition/update-uscis-details,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"uscisId": "5f7ff2f18f0b4858707debaa", 
+			"beneficiary": [
+				{
+					"typeId": 1,
+					"number": "131-SELF-BBB"
+				},
+				{
+					"typeId": 2,
+					"number": "485-SELF-FGG"
+				},
+				{
+					"typeId": 3,
+					"number": "485J-SELF-EWEW"
+				},
+				{
+					"typeId": 4,
+					"number": "765-SELF-WEWE"
+				},
+				{
+					"typeId": 5,
+					"number": "944-SELF-DSD"
+				}
+			],
+			"spouse": [
+				{
+					"typeId": 1,
+					"number": "131-SPOUSE-UIUI"
+				},
+				{
+					"typeId": 2,
+					"number": "485-SPOUSE-HKHKHH"
+				},
+				{
+					"typeId": 3,
+					"number": "485J-SPOUSE-HOUOU"
+				},
+				{
+					"typeId": 4,
+					"number": "765-SPOUSE-RYRTY"
+				},
+				{
+					"typeId": 5,
+					"number": "944-SPOUSE-IIOIOI"
+				}
+			],
+			"childrens": [
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 1,
+					"number": "131-CHILD-KHKHKH"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 2,
+					"number": "485-CHILD-HKHKHH"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 3,
+					"number": "485J-CHILD-HOUOU"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 4,
+					"number": "765-CHILD-RYRTY"
+				},
+				{
+					"clientId": "5f7efe0e8abc5a37c81bafd4",
+					"typeId": 5,
+					"number": "944-CHILD-IIOIOI"
+				}
+			]
+		}
+	-- Get USCIS details
+		Url: http://localhost:8989/gc-petition/get-uscis-details,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204"
+		}
+
+	-- Download all from  documents
+		Url: http://localhost:8989/gc-petition/download-all-forms,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204",
+			"caseNo": "GC-1002202000009",
+			"userType": "self",// 'spouse', 'child' // Optional
+			"childrenId": "5f7bf3f5caaf344aa4884693" // Optional
+		}
+
+	-- Download Application documents as zip
+		Url: http://localhost:8989/gc-petition/download-documents,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5f817f0497cae543c8810bcd",
+			"userType": "all", // self, spouse, child, scanned_copies('all' will not include scanned_copies)
+			"childrenId": "5f8183d6e8fb1a27ec3a96f8" // Required only dwload child documents
+		}
+
+	-- Delete application
+		Url: http://localhost:8989/gc-petition/delete,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionIds": ["5f7ea95abadd36537c264204"]
+		}
+
+	-- Request for Applicant Signature
+		Url: http://localhost:8989/gc-petition/request-for-sign,
+		Method: POST,
+		Headers: {
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"Content-Type": "application/json",
+		},
+		Payload: {
+			"petitionId": "5f7ea95abadd36537c264204", 
+			"comment": "Requesting for signing...."
+		}
+
+
+-- Configure Petition
+	Url: http://localhost:8989/petition-config/create,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload:  {
+		"typeId": 1,
+		"subTypeId": 1,
+        "formAndLetterIds": ["61174e22c00cba33b0a712b5"],
+		"questionnaireTplId": "611c9e1db49a6e3b68d2ba00", 
+        "insertTo": "Global", // 'Tenant' and required only for roles 1 and 2  
+		"tenantIds": ["611a29299e73421e6d7c1943"] // Required for only insertTo is 'Tenant' and for roles 1 and 2
+	}
+-- Petition Configuration List
+	Url: http://localhost:8989/petition-config/list,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+			"tenantIds": [], // Send only for roles 1 and 2
+			"statusList": [false, true],
+			"activeList": [false, true],
+			"typeIds": [1],
+			"subTypeIds": [1],
+			"statusList": [true, false],
+			"createdDateRange": ["2021-08-17", "2021-08-17"]
+		},
+		"page": 1, // Optional when 'getAll' send as 'true'
+		"perpage": 25, // Optional when 'getAll' send as 'true'
+		"getAll": true, // Send as 'true' to get all list
+		"sorting": {
+			"path": "tenantName", // createdByName, typeName, subTypeName, createdOn, updatedOn
+			"order": -1
+		}
+	}
+		
+-- Petition Configuration Details
+	Url: http://localhost:8989/petition-config/details,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionConfigId":"5de4f0957573e61e381688ef"
+	}
+
+-- Petition Configuration update
+	Url: http://localhost:8989/petition-config/update,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionConfigId": "61374c8cb45489a04128875b",
+		"typeId": 1,
+		"subTypeId": 1,
+		"formAndLetterIds": ["61374c13b45489a041288755"],
+		"questionnaireTplId": "6140a6fa4450296918930fb4",
+		"showPetitionAlert": true // Send 'false' on code in the response is 'LINKED_WITH_PETITION'
+	}
+		
+-- Petition Configuration Manage active status
+	Url: http://localhost:8989/petition-config/manage-active-status,
+	Method: POST,
+	Headers: {
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionConfigId": "61375192fe5a85ac0909031a",
+		"active": false // Send 'true' to activate
+	}
+
+-- Petition Configuration Update
+	Url: http://localhost:8989/users/activate,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"petitionConfigId": "611a91df5b3dc926d1e39515",
+        "title": "H1B - Amendment Config",
+		"typeId": 1,
+		"subTypeId": 1,
+        "formAndLetterIds": ["61174e22c00cba33b0a712b5"],
+		"questionnaireTplId": "611c9e1db49a6e3b68d2ba00", 
+        "insertTo": "All", // Tenant // Required for roles 1 and 2
+		"tenantIds": ["611a29299e73421e6d7c1943"] // Required for only insertTo is 'Tenant' and for roles 1 and 2
+	}
+
+-- Create Form And Letters
+	Url: http://localhost:8989/form-letter/create,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+	  	"name": "I-747 Form",
+    	"type": "Form",
+    	"document":  {
+            "name": "user.pdf",
+            "path": "/global/uploads/user-1628859811669.pdf",
+            "mimetype": "application/pdf",
+            "extn": "pdf"
+        }
+	}
+	
+-- Update Form And Letters
+	Url: http://localhost:8989/form-letter/update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+	  	"formAndLetterId": "61121ef8f7ea6b2ee82b8e23",
+		"name": "I-532 Letter",
+    	"type": "Letter",
+    	"document":  {
+            "name": "user.docx",
+            "path": "/global/uploads/user-1628859811669.docx",
+            "mimetype": "application/ms-word",
+            "extn": "docx"
+        }
+	}
+	
+-- Form And Letters List
+	Url: http://localhost:8989/form-letter/list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+			"title": "",
+			"typeIds": [],
+			"statusIds": [2, 4],
+			"createdDateRange": ["2021-08-14", "2021-08-14"]
+		},
+		"sorting": {
+			"path": "createdOn", updatedOn,createdByName,typeName,name,statusName
+			"order": 1
+		},
+		"page": 1,
+		"perpage": 25,
+		"getMasterData": true
+	}
+	
+-- Form And Letters Details
+	Url: http://localhost:8989/form-letter/details,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"formAndLetterId": "61121ef8f7ea6b2ee82b8e23"
+	}
+	
+-- Delete Form And Letters
+	Url: http://localhost:8989/form-letter/delete,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+	  	"formAndLetterId": "61121ef8f7ea6b2ee82b8e23"
+	}
+	
+
+-- Create questionnaire
+	Url: http://localhost:8989/questionnaire/create,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+            "name": "questionnaire1",
+    		"fields": ["middle_name","middle_name"],
+    		"sections": ["personal_info"]
+	}
+	
+-- Update questionnaire
+	Url: http://localhost:8989/questionnaire/update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+	  	"questionnaireId": "61121ef8f7ea6b2ee82b8e23",
+		"name": "questionnaire1",
+    	"fields": ["middle_name","middle_name"],
+    	"sections": ["personal_info"],
+		"configCompleted": false // Send 'true' for final submission
+	}
+	
+-- questionnaire List
+	Url: http://localhost:8989/questionnaire/list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+			"title": "",
+			"statusList": [false, true],
+			"activeList": [false, true],
+			"configList": [false, true],
+			"createdDateRange": ["2021-08-14", "2021-08-14"]
+		},
+		"sorting": {
+			"path": "createdOn", updatedOn,createdByName,name,
+			"order": 1
+		},
+		"page": 1, // Optional when 
+		"perpage": 25,
+		"getMasterData": true //send true to get as a MasterData
+	}
+	
+-- questionnaire Details
+	Url: http://localhost:8989/questionnaire/details,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"questionnaireId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- questionnaire Clone
+	Url: http://localhost:8989/questionnaire/clone,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"name": "questionnaire1",
+		"questionnaireId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- questionnaire Active status
+	Url: http://localhost:8989/questionnaire/manage-active-status,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"active": true,
+		"questionnaireId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- Workflow Create
+	Url: http://localhost:8989/workflow/create,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"name": "workflow",
+		"tenantId": "61375185fe5a85ac0909013c", // Optional
+		"config": [{
+				"code": "CREATE_PETITION",
+				"name": "Create Petition",
+				"editors": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				}],
+				"watchers": [{
+					"roleId": 13,
+					"roleName": "Beneficiary"
+				},{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUBMIT_BY_BENEFICIARY",
+				"name": "Petition submited by Benificiary",
+				"editors": [{
+					"roleId": 13,
+					"roleName": "Beneficiary"
+				}],
+				"watchers": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				},{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUBMIT_TO_LAW_FIRM",
+				"name": "Petitioner submitting the petition to Law firm",
+				"editors": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				}],
+				"watchers": [{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				},{
+					"roleId": 5,
+					"roleName": "Front Office User"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "LCA_REQUEST",
+				"name": "Request for Beneficiary\"s LCA",
+				"editors": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				}],
+				"watchers": [{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				},{
+					"roleId": 6,
+					"roleName": "Attorney"
+				},{
+					"roleId": 11,
+					"roleName": "LCA Manager"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "LCA_SUBMIT",
+				"name": "Submit LCA for Beneficiary",
+				"editors": [{
+					"roleId": 11,
+					"roleName": "LCA Manager"
+				}],
+				"watchers": [{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				},{
+					"roleId": 6,
+					"roleName": "Attorney"
+				},{
+					"roleId": 8,
+					"roleName": "paralegal"
+				},
+                {
+                    "roleId" : 12,
+                    "roleName" : "Petitioner"
+                }],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_SUPERVISOR",
+				"name": "Petition allocation to Supervisor",
+				"editors": [{
+					"roleId": 5,
+					"roleName": "Front Office User"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUPERVISOR_LIST",
+				"name": "Supervisor Selection List",
+				"editors": [{
+					"roleId": 7,
+					"roleName": "Supervisor"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_PARALEGAL",
+				"name": "Petition allocation to Paralegal",
+				"editors": [{
+					"roleId": 7,
+					"roleName": "Supervisor"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "PARALEGAL_LIST",
+				"name": "Paralegal Selection List",
+				"editors": [{
+					"roleId": 8,
+					"roleName": "Paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_DOCUMENTATION_MANAGER",
+				"name": "Petition allocation to Documentation Manager",
+				"editors": [{
+					"roleId": 8,
+					"roleName": "paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "DOCUMENTATION_MANAGER_LIST",
+				"name": "Documentation Manager Selection List",
+				"editors": [{
+					"roleId": 9,
+					"roleName": "Documentation Manager"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_DOCUMENTATION_EXECUTIVE",
+				"parentCode": "REVIEW_BY_DOCUMENTATION_MANAGER",
+				"name": "Petition allocation to Offshore Executive",
+				"editors": [{
+					"roleId": 9,
+					"roleName": "Documentation Manager"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "DOCUMENTATION_EXECUTIVE_LIST",
+				"name": "Documentation Executive Selection List",
+				"editors": [{
+					"roleId": 10,
+					"roleName": "Documentation Executive"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_ATTORNEY",
+				"name": "Petition allocation to Attorney",
+				"editors": [{
+					"roleId": 8,
+					"roleName": "Paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ATTORNEY_LIST",
+				"name": "Attorney Selection List",
+				"editors": [{
+					"roleId": 6,
+					"roleName": "Attorney"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "CASE_APPROVED",
+				"name": "Send for Petitioner Signature",
+				"editors": [{
+					"roleId": 6,
+					"roleName": "Attorney"
+				},{
+					"roleId": 8,
+					"roleName": "Paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "FILING_FEE",
+				"name": "Filing Fee",
+				"editors": [{
+						"roleId": 6,
+						"roleName": "Attorney"
+					},
+					{
+						"roleId": 8,
+						"roleName": "Paralegal"
+					}
+				],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "PAYMENT_INTEGRATION",
+				"name": "Payment Integration",
+				"editors": [],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "REQUEST_PETITIONER_SIGN",
+				"name": "Send For Petitioner Signature",
+				"editors": [{
+					"roleId": 6,
+					"roleName": "Attorney"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUBMIT_TO_USCIS",
+				"name": "Submit to USCIS",
+				"editors": [{
+						"roleId": 6,
+						"roleName": "Attorney"
+					},
+					{
+						"roleId": 8,
+						"roleName": "Paralegal"
+					}
+				],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "COURIER_TRACKING",
+				"name": "Courier Tracking",
+				"editors": [{
+					"roleId": 5,
+					"roleName": "Front Office User"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "UPDATE_USCIS_RESPONSE",
+				"name": "Update USCIS response",
+				"editors": [{
+						"roleId": 5,
+						"roleName": "Front Office User"
+					},
+					{
+						"roleId": 8,
+						"roleName": "Paralegal"
+					}
+				],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			}
+		]
+	}
+
+-- Workflow List
+	Url: http://localhost:8989/workflow/list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+			"title": "workflow",
+			"statusList": [false, true],
+			"createdDateRange": ["2021-08-23", "2021-08-23"],
+			"tenantIds": ["61375185fe5a85ac0909013c"]
+		},
+		"sorting": {
+			"path": "createdOn", updatedOn, createdByName, name, tenantName,
+			"order": 1
+		},
+		"page": 1, // Optional when 'getAll' send as 'true'
+		"perpage": 25, // Optional when 'getAll' send as 'true'
+		"getAll": true // Send as 'true' to get all list
+	}
+	
+-- Workflow Details
+	Url: http://localhost:8989/workflow/details,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"workflowId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- Workflow Update
+	Url: http://localhost:8989/workflow/update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"workflowId": "612379d3ce4b240b56db7524",
+		"name": "workflow",
+		"config": [{
+				"code": "CREATE_PETITION",
+				"name": "Create Petition",
+				"editors": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				}],
+				"watchers": [{
+					"roleId": 13,
+					"roleName": "Beneficiary"
+				},{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUBMIT_BY_BENEFICIARY",
+				"name": "Petition submited by Benificiary",
+				"editors": [{
+					"roleId": 13,
+					"roleName": "Beneficiary"
+				}],
+				"watchers": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				},{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUBMIT_TO_LAW_FIRM",
+				"name": "Petitioner submitting the petition to Law firm",
+				"editors": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				}],
+				"watchers": [{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				},{
+					"roleId": 5,
+					"roleName": "Front Office User"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "LCA_REQUEST",
+				"name": "Request for Beneficiary\"s LCA",
+				"editors": [{
+					"roleId": 12,
+					"roleName": "Petitioner"
+				}],
+				"watchers": [{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				},{
+					"roleId": 6,
+					"roleName": "Attorney"
+				},{
+					"roleId": 11,
+					"roleName": "LCA Manager"
+				}],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "LCA_SUBMIT",
+				"name": "Submit LCA for Beneficiary",
+				"editors": [{
+					"roleId": 11,
+					"roleName": "LCA Manager"
+				}],
+				"watchers": [{
+					"roleId": 4,
+					"roleName": "Branch Manager"
+				},{
+					"roleId": 6,
+					"roleName": "Attorney"
+				},{
+					"roleId": 8,
+					"roleName": "paralegal"
+				},
+                {
+                    "roleId" : 12,
+                    "roleName" : "Petitioner"
+                }],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_SUPERVISOR",
+				"name": "Petition allocation to Supervisor",
+				"editors": [{
+					"roleId": 5,
+					"roleName": "Front Office User"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUPERVISOR_LIST",
+				"name": "Supervisor Selection List",
+				"editors": [{
+					"roleId": 7,
+					"roleName": "Supervisor"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_PARALEGAL",
+				"name": "Petition allocation to Paralegal",
+				"editors": [{
+					"roleId": 7,
+					"roleName": "Supervisor"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "PARALEGAL_LIST",
+				"name": "Paralegal Selection List",
+				"editors": [{
+					"roleId": 8,
+					"roleName": "Paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_DOCUMENTATION_MANAGER",
+				"name": "Petition allocation to Documentation Manager",
+				"editors": [{
+					"roleId": 8,
+					"roleName": "paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "DOCUMENTATION_MANAGER_LIST",
+				"name": "Documentation Manager Selection List",
+				"editors": [{
+					"roleId": 9,
+					"roleName": "Documentation Manager"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_DOCUMENTATION_EXECUTIVE",
+				"parentCode": "REVIEW_BY_DOCUMENTATION_MANAGER",
+				"name": "Petition allocation to Offshore Executive",
+				"editors": [{
+					"roleId": 9,
+					"roleName": "Documentation Manager"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "DOCUMENTATION_EXECUTIVE_LIST",
+				"name": "Documentation Executive Selection List",
+				"editors": [{
+					"roleId": 10,
+					"roleName": "Documentation Executive"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ASSIGN_ATTORNEY",
+				"name": "Petition allocation to Attorney",
+				"editors": [{
+					"roleId": 8,
+					"roleName": "Paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "ATTORNEY_LIST",
+				"name": "Attorney Selection List",
+				"editors": [{
+					"roleId": 6,
+					"roleName": "Attorney"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "CASE_APPROVED",
+				"name": "Send for Petitioner Signature",
+				"editors": [{
+					"roleId": 6,
+					"roleName": "Attorney"
+				},{
+					"roleId": 8,
+					"roleName": "Paralegal"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "FILING_FEE",
+				"name": "Filing Fee",
+				"editors": [{
+						"roleId": 6,
+						"roleName": "Attorney"
+					},
+					{
+						"roleId": 8,
+						"roleName": "Paralegal"
+					}
+				],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "PAYMENT_INTEGRATION",
+				"name": "Payment Integration",
+				"editors": [],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "REQUEST_PETITIONER_SIGN",
+				"name": "Send For Petitioner Signature",
+				"editors": [{
+					"roleId": 6,
+					"roleName": "Attorney"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "SUBMIT_TO_USCIS",
+				"name": "Submit to USCIS",
+				"editors": [{
+						"roleId": 6,
+						"roleName": "Attorney"
+					},
+					{
+						"roleId": 8,
+						"roleName": "Paralegal"
+					}
+				],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "COURIER_TRACKING",
+				"name": "Courier Tracking",
+				"editors": [{
+					"roleId": 5,
+					"roleName": "Front Office User"
+				}],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			},
+			{
+				"code": "UPDATE_USCIS_RESPONSE",
+				"name": "Update USCIS response",
+				"editors": [{
+						"roleId": 5,
+						"roleName": "Front Office User"
+					},
+					{
+						"roleId": 8,
+						"roleName": "Paralegal"
+					}
+				],
+				"watchers": [],
+				"include": "Yes",
+				"actionRequired": "Yes"
+			}
+		],
+		"configCompleted": true, // Send as 'true' on complete configuration
+		"showPetitionAlert": true // Send 'false' on code in the response is 'LINKED_WITH_PETITION'
+	}
+
+-- Workflow Active status
+	Url: http://localhost:8989/workflow/manage-active-status,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"active": true
+		"workflowId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- Workflow Clone
+	Url: http://localhost:8989/workflow/clone,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"name": "work",
+		"workflowId": "611b60c5c3d10132206c4ef7"
+	}
+
+
+-- Workflow Save Config
+	Url: http://localhost:8989/workflow/config-save,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"workflowId": "61237892c62ab8033ae4fc08",
+		"petitionTypeId": 2
+	}
+	
+-- Workflow Config List
+	Url: http://localhost:8989/workflow/config-list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+  			"petitionTypeList": [3],
+			"statusList": [false, true],
+			"createdByList": ["61320ae5e03b9362205b41c9"],
+			"createdDateRange": ["2021-08-23", "2021-08-23"],
+			"tenantIds": ["61375185fe5a85ac0909013c"]
+		},
+		"sorting": {
+			"path": "createdOn", updatedOn, createdByName, petitionTypeName, workFlowName, tenantName
+			"order": 1
+		},
+		"page": 1, // Optional when 'getAll' send as 'true'
+		"perpage": 25, // Optional when 'getAll' send as 'true'
+		"getAll": true // Send as 'true' to get all list
+	}
+	
+-- Workflow Update Config
+	Url: http://localhost:8989/workflow/config-update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"workflowConfigId": "61320ae5e03b9362205b41c9",
+		"workflowId": "61237892c62ab8033ae4fc08",
+		"petitionTypeId": 2
+	}
+	
+-- Workflow Config Details
+	Url: http://localhost:8989/workflow/config-details,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"workflowConfigId": "61320ae5e03b9362205b41c9"
+	}
+	
+-- Create branch
+	Url: http://localhost:8989/branch/create,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+ 		"name": "My Branch 4",
+  		"phone":"9999988890",
+  		"phoneCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+  		"fax":"5555444433",
+  		"faxCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+  		"address": {
+    		"line1": "1-33",
+        	"line2": "James Street",
+        	"locationId": 4234,
+        	"stateId": 674,
+        	"countryId": 231,
+        	"zipcode": "42323"
+  		},
+  		"contact": { 
+			"firstName": "sri",
+			"middleName": "nishith",
+			"lastName": "s",
+			"email": "srinishith64@gmail.com",
+			"phone": "5535354423",
+			"phoneCountryCode":  { 
+				"countryCode":"IN",
+				"countryCallingCode":"+91"
+			}
+  		}
+	}
+	
+-- Update branch
+	Url: http://localhost:8989/branch/update,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+    	"branchId": "6131f0f5730acc31a4b20b79",
+    	"name": "My Branch54 ",
+  		"phone":"9999988890",
+  		"phoneCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+  		"fax":"5555444433",
+  		"faxCountryCode": { 
+			"countryCode":"IN",
+			"countryCallingCode":"+91"
+		},
+  		"address": {
+    		"line1": "1-33",
+        	"line2": "James Street",
+        	"locationId": 4234,
+        	"stateId": 674,
+        	"countryId": 231,
+        	"zipcode": "42323"
+  		},
+		"contact": { 
+    		"firstName": "sri",
+    		"middleName": "reddy",
+    		"lastName": "s",
+    		"email": "srinishith@gmail.com",
+    		"phone": "5535354423",
+    		"phoneCountryCode":  { 
+				"countryCode":"IN",
+				"countryCallingCode":"+91"
+			}
+  		}
+	}
+	
+-- Branch List
+	Url: http://localhost:8989/branch/list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"filters":{
+			"title": "Branch",
+			"statusList": [false, true],
+			"activeList": [false, true],
+			"countryIds": [231],
+			"stateIds": [674],
+			"locationIds": [4234],
+			"createdDateRange": ["2021-08-23", "2021-09-23"]
+		},
+		"getMasterData": false,// Send true to get as masterdata
+		"page": 1,
+		"perpage": 25,
+		"getAll": true
+	}
+	
+-- Branch Details
+	Url: http://localhost:8989/branch/details,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"branchId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- Branch status manage
+	Url: http://localhost:8989/branch/manage-active-status,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json",
+		"Nonce": {{UUID}}
+	},
+	Payload: {
+		"active": true // Send 'true' for activate and 'false' for inactivate
+		"branchId": "611b60c5c3d10132206c4ef7"
+	}
+
+-- Common messages list
+	Url: http://localhost:8989/messages/list,
+	Method: POST,
+	Headers: {
+		"Content-Type": "application/json"
+	},
+	Payload: {
+		"category": "WORKFLOW"
+	}
+
